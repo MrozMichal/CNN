@@ -4,7 +4,6 @@ from NeuralNetwork import NeuralNetwork
 from matplotlib import pyplot as plt
 import numpy as np
 
-
 class TrainingWindow:
     def __init__(self, epochs, training_history):
         self.frame = Tk()
@@ -12,7 +11,8 @@ class TrainingWindow:
         self.frame.title('Przebieg uczenia sieci')
         screen_width = self.frame.winfo_screenwidth()
         screen_height = self.frame.winfo_screenheight()
-        self.frame.geometry('325x235+%d+%d' % ((screen_width - 325) / 2, (screen_height - 235) / 2))
+        self.frame.geometry('325x235')
+        #self.frame.geometry('325x235+%d+%d' % ((screen_width - 325) / 2, (screen_height - 235) / 2))
         self.frame.grid_propagate(False)
         self.frame.eval('tk::PlaceWindow . center')
 
@@ -75,11 +75,8 @@ class Gui:
         self.frame.grid_propagate(False)
 
         self.__create_widgets()
-
         self.network = None
-
         self.training_window = None
-
         self.frame.mainloop()
 
     def __create_widgets(self):
@@ -193,8 +190,96 @@ class Gui:
         self.action_panel_reset_button.place(x=390, y=15, width=90, height=40)
 
     def __create_visualization_widgets(self):
-        self.visualization_frame = LabelFrame(self.frame, text='Wizualizacja', width=500, height=550)
-        self.visualization_frame.place(x=620, y=15)
+        self.visualization_frame = LabelFrame(self.frame, text='Wizualizacja',width=500, height=550)
+        #self.visualization_frame = LabelFrame(self.frame, text='Wizualizacja',width=500, height=850)
+        self.visualization_frame.place(x=620, y=15,width=500, height=550)
+
+        c = Canvas(self.visualization_frame)
+        c.pack()
+
+        # I kwadrat
+        c.create_rectangle(  0,   0,  50,  50, outline="#000000", fill="#000000")
+        c.create_rectangle( 52,   0, 102,  50, outline="#000000", fill="#000000")
+        c.create_rectangle(104,   0, 154,  50, outline="#000000", fill="#000000")
+
+        c.create_rectangle(  0,  52,  50, 102, outline="#000000", fill="#000000")
+        c.create_rectangle( 52,  52, 102, 102, outline="#000000", fill="#000000")
+        c.create_rectangle(104,  52, 154, 102, outline="#000000", fill="#000000")
+
+        c.create_rectangle(  0, 104,  50, 154, outline="#000000", fill="#000000")
+        c.create_rectangle( 52, 104, 102, 154, outline="#000000", fill="#000000")
+        c.create_rectangle(104, 104, 154, 154, outline="#000000", fill="#000000")
+
+        # II kwadrat
+        c.create_rectangle(  0,   0+200,  50,  50+200, outline="#000000", fill="#000000")
+        c.create_rectangle( 52,   0+200, 102,  50+200, outline="#000000", fill="#000000")
+        c.create_rectangle(104,   0+200, 154,  50+200, outline="#000000", fill="#000000")
+
+        c.create_rectangle(  0,  52+200,  50, 102+200, outline="#000000", fill="#000000")
+        c.create_rectangle( 52,  52+200, 102, 102+200, outline="#000000", fill="#000000")
+        c.create_rectangle(104,  52+200, 154, 102+200, outline="#000000", fill="#000000")
+
+        c.create_rectangle(  0, 104+200,  50, 154+200, outline="#000000", fill="#000000")
+        c.create_rectangle( 52, 104+200, 102, 154+200, outline="#000000", fill="#000000")
+        c.create_rectangle(104, 104+200, 154, 154+200, outline="#000000", fill="#000000")
+
+        # III kwadrat
+        c.create_rectangle(  0,   0+400,  50,  50+400, outline="#000000", fill="#000000")
+        c.create_rectangle( 52,   0+400, 102,  50+400, outline="#000000", fill="#000000")
+        c.create_rectangle(104,   0+400, 154,  50+400, outline="#000000", fill="#000000")
+
+        c.create_rectangle(  0,  52+400,  50, 102+400, outline="#000000", fill="#000000")
+        c.create_rectangle( 52,  52+400, 102, 102+400, outline="#000000", fill="#000000")
+        c.create_rectangle(104,  52+400, 154, 102+400, outline="#000000", fill="#000000")
+
+        c.create_rectangle(  0, 104+400,  50, 154+400, outline="#000000", fill="#000000")
+        c.create_rectangle( 52, 104+400, 102, 154+400, outline="#000000", fill="#000000")
+        c.create_rectangle(104, 104+400, 154, 154+400, outline="#000000", fill="#000000")
+
+        #c.create_rectangle( 30, 30,  130, 130, outline="#ffff00", fill="#ffff00")   # żółty
+        #c.create_rectangle(150, 30, 250, 130, outline="#ffffff", fill="#ffffff")    # biały
+        #c.create_rectangle(30, 150, 130, 250, outline="#808080", fill="#808080")    # szary
+        #c.create_rectangle(150, 150, 250, 250, outline="#000000", fill="#000000")   # czarny
+
+        # IV kwadrat
+        c.create_rectangle(  0+200,   0,  50+200,  50, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle( 52+200,   0, 102+200,  50, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle(104+200,   0, 154+200,  50, outline="#ffffff", fill="#ffffff")
+
+        c.create_rectangle(  0+200,  52,  50+200, 102, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle( 52+200,  52, 102+200, 102, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle(104+200,  52, 154+200, 102, outline="#ffffff", fill="#ffffff")
+
+        c.create_rectangle(  0+200, 104,  50+200, 154, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle( 52+200, 104, 102+200, 154, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle(104+200, 104, 154+200, 154, outline="#ffffff", fill="#ffffff")
+
+        # V kwadrat
+        c.create_rectangle(  0+200,   0+200,  50+200,  50+200, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle( 52+200,   0+200, 102+200,  50+200, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle(104+200,   0+200, 154+200,  50+200, outline="#ffffff", fill="#ffffff")
+
+        c.create_rectangle(  0+200,  52+200,  50+200, 102+200, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle( 52+200,  52+200, 102+200, 102+200, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle(104+200,  52+200, 154+200, 102+200, outline="#ffffff", fill="#ffffff")
+
+        c.create_rectangle(  0+200, 104+200,  50+200, 154+200, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle( 52+200, 104+200, 102+200, 154+200, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle(104+200, 104+200, 154+200, 154+200, outline="#ffffff", fill="#ffffff")
+
+        # VI kwadrat
+        c.create_rectangle(  0+200,   0+400,  50+200,  50+400, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle( 52+200,   0+400, 102+200,  50+400, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle(104+200,   0+400, 154+200,  50+400, outline="#ffffff", fill="#ffffff")
+
+        c.create_rectangle(  0+200,  52+400,  50+200, 102+400, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle( 52+200,  52+400, 102+200, 102+400, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle(104+200,  52+400, 154+200, 102+400, outline="#ffffff", fill="#ffffff")
+
+        c.create_rectangle(  0+200, 104+400,  50, 154+400, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle( 52+200, 104+400, 102, 154+400, outline="#ffffff", fill="#ffffff")
+        c.create_rectangle(104+200, 104+400, 154, 154+400, outline="#ffffff", fill="#ffffff")
+
 
     def __create_visualization_options_widgets(self):
         self.visualization_options_frame = LabelFrame(self.frame, text='Opcje wyświetlania', width=500, height=70)
