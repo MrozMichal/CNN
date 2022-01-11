@@ -4,6 +4,7 @@ from random import randrange
 from random import random
 from csv import reader
 from math import exp
+import copy
 
 
 # Load a CSV file
@@ -26,14 +27,22 @@ def str_column_to_float(dataset, column):
 
 # Convert string column to integer
 def str_column_to_int(dataset, column):
-    class_values = [row[column] for row in dataset]
-    unique = set(class_values)
-    lookup = dict()
-    for i, value in enumerate(unique):
-        lookup[value] = i
+    # class_values = [row[column] for row in dataset]
+    # print('Class_values: ')
+    # print(class_values)
+    # unique = set(class_values)
+    #
+    # sorted(unique)
+    # print(unique)
+    # lookup = dict()
+    # for i, value in enumerate(unique):
+    #     lookup[value] = i
     for row in dataset:
-        row[column] = lookup[row[column]]
-    return lookup
+        #row[column] = lookup[row[column]]
+        row[column] = int(row[column])
+    # print("Lookup:")
+    # print(lookup)
+    # return lookup
 
 # Split a dataset into k folds
 def cross_validation_split(dataset, n_folds):
@@ -74,12 +83,8 @@ def evaluate_algorithm(dataset, algorithm, n_folds, *args):
             row_copy = list(row)
             test_set.append(row_copy)
             row_copy[-1] = None
-            # print('Train set: ')
-            # print(train_set)
         predicted = algorithm(train_set, test_set, *args)
         actual = [row[-1] for row in fold]
-        print(actual)
-        print(predicted)
         accuracy = accuracy_metric(actual, predicted)
         scores.append(accuracy)
     return scores
@@ -162,16 +167,17 @@ def train_network(network, train, l_rate, n_epoch, n_outputs):
             expected[row[-1]] = 1
             backward_propagate_error(network, expected)
             update_weights(network, row, l_rate)
+    for i in range(len(network)):
+        for neuron in network[i]:
+                print(neuron['weights'])
 
 
 # Initialize a network
 def initialize_network(n_inputs, n_hidden, n_outputs):
     network = list()
     hidden_layer = [{'weights': [random() for i in range(n_inputs + 1)]} for i in range(n_hidden)]
-    #hidden_layer = [{'weights': [random() for i in range(n_inputs)]} for i in range(n_hidden)]
     network.append(hidden_layer)
     output_layer = [{'weights': [random() for i in range(n_hidden + 1)]} for i in range(n_outputs)]
-    #output_layer = [{'weights': [random() for i in range(n_hidden)]} for i in range(n_outputs)]
     network.append(output_layer)
     return network
 
@@ -198,10 +204,15 @@ def back_propagation(train, test, l_rate, n_epoch, n_hidden):
         prediction = predict(network, row)
         predictions.append(prediction)
 
-    print(predict(network, [1,1,1,1,1,1,1,1,1,0]))
-    print(predict(network, [1, 1, 1, 0, 0, 0, 1, 1, 1, 0]))
-    print(predict(network, [1,1,1,0,1,0,0,1,0,0]))
-    print(predict(network, [1,0,1,0,1,0,1,0,0,1]))
+    print(predict(network, [1,1,1,1,1,1,1,1,1,0])) #oczekiwane False dla pierwszej
+    print(predict(network, [1, 1, 1, 0, 0, 0, 1, 1, 1, 0])) #oczekiwane False dla pierwszej
+    print(predict(network, [1,1,0,0,1,0,0,1,0,0])) #oczekiwane False dla pierwszej
+    print(predict(network, [1,0,1,0,1,0,1,0,0,1])) #oczekiwane True dla pierwszej
+    print(predict(network, [1, 0, 1, 0, 1, 0, 1, 0, 1, 1]))  # Test dla identycznej pierwszej ikony, oczekiwane True dla pierwszej
+    print(predict(network, [1,1,1,0,1,0,0,1,0,1])) #Test dla identycznej drugiej ikony, oczekiwane False dla pierwszej
+
+
+
 
     return (predictions)
 
@@ -209,19 +220,55 @@ def back_propagation(train, test, l_rate, n_epoch, n_hidden):
 # Test Backprop on Seeds dataset
 seed(1)
 # load and prepare data
+#   Nalezy zaladowac plik .csv z danymi dla pierwszej sieci neuronowej - pozostale utworza sie same.
+#   Forma pliku wyglada nastepujaco - splaszczona lista, z jedynkami, tam gdzie ma byc True dla ikonki i na końcu stwierdzenie przynaleznosci do klasy, lub jej brak
+
 filename = 'BP.csv'
+
 dataset = load_csv(filename)
+
 for i in range(len(dataset[0]) - 1):
     str_column_to_float(dataset, i)
+
 # convert class column to integers
 str_column_to_int(dataset, len(dataset[0]) - 1)
+
+# making dataset 2
+dataset2=copy.deepcopy(dataset)
+for i in range(len(dataset2)):
+    if i==1:
+        dataset2[i][-1]=1
+    else:
+        dataset2[i][-1]=0
+
+
+# making dataset 3
+dataset3=copy.deepcopy(dataset)
+for i in range(len(dataset3)):
+    if i==2:
+        dataset3[i][-1]=1
+    else:
+        dataset3[i][-1]=0
+
 # evaluate algorithm
 n_folds = 1
-l_rate = 0.75
-n_epoch = 500
+l_rate = 0.9
+n_epoch = 10000
 n_hidden = 1
+
+
 scores = evaluate_algorithm(dataset, back_propagation, n_folds, l_rate, n_epoch, n_hidden)
+scores2 = evaluate_algorithm(dataset2, back_propagation, n_folds, l_rate, n_epoch, n_hidden)
+scores3 = evaluate_algorithm(dataset3, back_propagation, n_folds, l_rate, n_epoch, n_hidden)
+
+
 print('Scores: %s' % scores)
 print('Mean Accuracy: %.3f%%' % (sum(scores) / float(len(scores))))
+
+print('Scores: %s' % scores2)
+print('Mean Accuracy: %.3f%%' % (sum(scores2) / float(len(scores2))))
+
+print('Scores: %s' % scores3)
+print('Mean Accuracy: %.3f%%' % (sum(scores3) / float(len(scores3))))
 
 
