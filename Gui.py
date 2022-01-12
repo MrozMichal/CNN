@@ -68,10 +68,11 @@ class Gui:
     def __init__(self):
         self.frame = Tk()
         self.frame.resizable(0, 0)
-        self.frame.title('BP gui')
+        self.frame.title('Back Propagation GUI')
         screen_width = self.frame.winfo_screenwidth()
         screen_height = self.frame.winfo_screenheight()
-        self.frame.geometry('1170x660+%d+%d' % ((screen_width - 1170) / 2, (screen_height - 660) / 2))
+        self.frame.geometry('1170x660')
+        #self.frame.geometry('1170x660+%d+%d' % ((screen_width - 1170) / 2, (screen_height - 660) / 2))
         self.frame.grid_propagate(False)
 
         self.__create_widgets()
@@ -100,6 +101,74 @@ class Gui:
                                                state='readonly', readonlybackground='#FFFFFF')
         self.Ikona_output_entry.place(x=300, y=600, width=75, height=30)
         self.Ikona_output_entry.insert(0, '0')
+
+
+        # ICONS
+        self.ikona1 = StringVar()
+        self.ikona2 = StringVar()
+        self.ikona3 = StringVar()
+        self.ikona4 = StringVar()
+        self.ikona5 = StringVar()
+        self.ikona6 = StringVar()
+        self.ikona7 = StringVar()
+        self.ikona8 = StringVar()
+        self.ikona9 = StringVar()
+
+        self.ikonaAnswer1 = StringVar()
+        self.ikonaAnswer2 = StringVar()
+        self.ikonaAnswer3 = StringVar()
+
+        self.ikona1 = Entry(self.frame, justify=CENTER,
+                                       textvariable=self.ikona1,
+                                       state='readonly', readonlybackground='#FFFFFF')
+        self.ikona2 = Entry(self.frame, justify=CENTER,
+                                       textvariable=self.ikona2,
+                                       state='readonly', readonlybackground='#FFFFFF')
+        self.ikona3 = Entry(self.frame, justify=CENTER,
+                                       textvariable=self.ikona3,
+                                       state='readonly', readonlybackground='#FFFFFF')
+        self.ikona4 = Entry(self.frame, justify=CENTER,
+                                       textvariable=self.ikona4,
+                                       state='readonly', readonlybackground='#FFFFFF')
+        self.ikona5 = Entry(self.frame, justify=CENTER,
+                                       textvariable=self.ikona5,
+                                       state='readonly', readonlybackground='#FFFFFF')
+        self.ikona6 = Entry(self.frame, justify=CENTER,
+                                       textvariable=self.ikona6,
+                                       state='readonly', readonlybackground='#FFFFFF')
+        self.ikona7 = Entry(self.frame, justify=CENTER,
+                                       textvariable=self.ikona7,
+                                       state='readonly', readonlybackground='#FFFFFF')
+        self.ikona8 = Entry(self.frame, justify=CENTER,
+                                       textvariable=self.ikona8,
+                                       state='readonly', readonlybackground='#FFFFFF')
+        self.ikona9 = Entry(self.frame, justify=CENTER,
+                                       textvariable=self.ikona9,
+                                       state='readonly', readonlybackground='#FFFFFF')
+
+        self.ikonaAnswer1 = Entry(self.frame, justify=CENTER,
+                                       textvariable=self.ikonaAnswer1,
+                                       state='readonly', readonlybackground='#FFFFFF')
+        self.ikonaAnswer2 = Entry(self.frame, justify=CENTER,
+                                       textvariable=self.ikonaAnswer2,
+                                       state='readonly', readonlybackground='#FFFFFF')
+        self.ikonaAnswer3 = Entry(self.frame, justify=CENTER,
+                                       textvariable=self.ikonaAnswer3,
+                                       state='readonly', readonlybackground='#FFFFFF')
+
+        self.ikona1.place(x=120, y=425, width=40, height=40)
+        self.ikona2.place(x=190, y=425, width=40, height=40)
+        self.ikona3.place(x=260, y=425, width=40, height=40)
+        self.ikona4.place(x=120, y=475, width=40, height=40)
+        self.ikona5.place(x=190, y=475, width=40, height=40)
+        self.ikona6.place(x=260, y=475, width=40, height=40)
+        self.ikona7.place(x=120, y=525, width=40, height=40)
+        self.ikona8.place(x=190, y=525, width=40, height=40)
+        self.ikona9.place(x=260, y=525, width=40, height=40)
+
+        self.ikonaAnswer1.place(x=470, y=425, width=40, height=40)
+        self.ikonaAnswer2.place(x=470, y=475, width=40, height=40)
+        self.ikonaAnswer3.place(x=470, y=525, width=40, height=40)
 
         #self.__create_network_widgets()
 
@@ -195,7 +264,11 @@ class Gui:
         self.visualization_frame.place(x=620, y=15,width=500, height=550)
 
         c = Canvas(self.visualization_frame)
-        c.pack()
+        c.pack(fill=BOTH, expand=1)
+        #outline="#ffff00", fill="#ffff00")   # żółty
+        #outline="#ffffff", fill="#ffffff")   # biały
+        #outline="#808080", fill="#808080")   # szary
+        #outline="#000000", fill="#000000")   # czarny
 
         # I kwadrat
         c.create_rectangle(  0,   0,  50,  50, outline="#000000", fill="#000000")
@@ -211,75 +284,231 @@ class Gui:
         c.create_rectangle(104, 104, 154, 154, outline="#000000", fill="#000000")
 
         # II kwadrat
-        c.create_rectangle(  0,   0+200,  50,  50+200, outline="#000000", fill="#000000")
-        c.create_rectangle( 52,   0+200, 102,  50+200, outline="#000000", fill="#000000")
-        c.create_rectangle(104,   0+200, 154,  50+200, outline="#000000", fill="#000000")
+        c.create_rectangle(  0,   0+180,  50,  50+180, outline="#000000", fill="#000000")
+        c.create_rectangle( 52,   0+180, 102,  50+180, outline="#000000", fill="#000000")
+        c.create_rectangle(104,   0+180, 154,  50+180, outline="#000000", fill="#000000")
 
-        c.create_rectangle(  0,  52+200,  50, 102+200, outline="#000000", fill="#000000")
-        c.create_rectangle( 52,  52+200, 102, 102+200, outline="#000000", fill="#000000")
-        c.create_rectangle(104,  52+200, 154, 102+200, outline="#000000", fill="#000000")
+        c.create_rectangle(  0,  52+180,  50, 102+180, outline="#000000", fill="#000000")
+        c.create_rectangle( 52,  52+180, 102, 102+180, outline="#000000", fill="#000000")
+        c.create_rectangle(104,  52+180, 154, 102+180, outline="#000000", fill="#000000")
 
-        c.create_rectangle(  0, 104+200,  50, 154+200, outline="#000000", fill="#000000")
-        c.create_rectangle( 52, 104+200, 102, 154+200, outline="#000000", fill="#000000")
-        c.create_rectangle(104, 104+200, 154, 154+200, outline="#000000", fill="#000000")
+        c.create_rectangle(  0, 104+180,  50, 154+180, outline="#000000", fill="#000000")
+        c.create_rectangle( 52, 104+180, 102, 154+180, outline="#000000", fill="#000000")
+        c.create_rectangle(104, 104+180, 154, 154+180, outline="#000000", fill="#000000")
 
         # III kwadrat
-        c.create_rectangle(  0,   0+400,  50,  50+400, outline="#000000", fill="#000000")
-        c.create_rectangle( 52,   0+400, 102,  50+400, outline="#000000", fill="#000000")
-        c.create_rectangle(104,   0+400, 154,  50+400, outline="#000000", fill="#000000")
+        c.create_rectangle(  0,   0+360,  50,  50+360, outline="#000000", fill="#000000")
+        c.create_rectangle( 52,   0+360, 102,  50+360, outline="#000000", fill="#000000")
+        c.create_rectangle(104,   0+360, 154,  50+360, outline="#000000", fill="#000000")
 
-        c.create_rectangle(  0,  52+400,  50, 102+400, outline="#000000", fill="#000000")
-        c.create_rectangle( 52,  52+400, 102, 102+400, outline="#000000", fill="#000000")
-        c.create_rectangle(104,  52+400, 154, 102+400, outline="#000000", fill="#000000")
+        c.create_rectangle(  0,  52+360,  50, 102+360, outline="#000000", fill="#000000")
+        c.create_rectangle( 52,  52+360, 102, 102+360, outline="#000000", fill="#000000")
+        c.create_rectangle(104,  52+360, 154, 102+360, outline="#000000", fill="#000000")
 
-        c.create_rectangle(  0, 104+400,  50, 154+400, outline="#000000", fill="#000000")
-        c.create_rectangle( 52, 104+400, 102, 154+400, outline="#000000", fill="#000000")
-        c.create_rectangle(104, 104+400, 154, 154+400, outline="#000000", fill="#000000")
+        c.create_rectangle(  0, 104+360,  50, 154+360, outline="#000000", fill="#000000")
+        c.create_rectangle( 52, 104+360, 102, 154+360, outline="#000000", fill="#000000")
+        c.create_rectangle(104, 104+360, 154, 154+360, outline="#000000", fill="#000000")
 
-        #c.create_rectangle( 30, 30,  130, 130, outline="#ffff00", fill="#ffff00")   # żółty
-        #c.create_rectangle(150, 30, 250, 130, outline="#ffffff", fill="#ffffff")    # biały
-        #c.create_rectangle(30, 150, 130, 250, outline="#808080", fill="#808080")    # szary
-        #c.create_rectangle(150, 150, 250, 250, outline="#000000", fill="#000000")   # czarny
+        ## WYNIKI LICZBOWE
 
         # IV kwadrat
-        c.create_rectangle(  0+200,   0,  50+200,  50, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle( 52+200,   0, 102+200,  50, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle(104+200,   0, 154+200,  50, outline="#ffffff", fill="#ffffff")
+        self.visualization_q11 = StringVar()
+        self.visualization_q12 = StringVar()
+        self.visualization_q13 = StringVar()
+        self.visualization_q14 = StringVar()
+        self.visualization_q15 = StringVar()
+        self.visualization_q16 = StringVar()
+        self.visualization_q17 = StringVar()
+        self.visualization_q18 = StringVar()
+        self.visualization_q19 = StringVar()
 
-        c.create_rectangle(  0+200,  52,  50+200, 102, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle( 52+200,  52, 102+200, 102, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle(104+200,  52, 154+200, 102, outline="#ffffff", fill="#ffffff")
+        self.visualization_q11 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q11,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q12 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q12,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q13 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q13,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q14 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q14,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q15 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q15,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q16 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q16,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q17 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q17,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q18 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q18,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q19 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q19,
+                                           state='readonly', readonlybackground='#FFFFFF')
 
-        c.create_rectangle(  0+200, 104,  50+200, 154, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle( 52+200, 104, 102+200, 154, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle(104+200, 104, 154+200, 154, outline="#ffffff", fill="#ffffff")
+        self.visualization_q11.place(x=0 + 200, y=0, width=50, height=50)
+        self.visualization_q12.place(x=0 + 252, y=0, width=50, height=50)
+        self.visualization_q13.place(x=0 + 304, y=0, width=50, height=50)
+        self.visualization_q14.place(x=0 + 200, y=52, width=50, height=50)
+        self.visualization_q15.place(x=0 + 252, y=52, width=50, height=50)
+        self.visualization_q16.place(x=0 + 304, y=52, width=50, height=50)
+        self.visualization_q17.place(x=0 + 200, y=104, width=50, height=50)
+        self.visualization_q18.place(x=0 + 252, y=104, width=50, height=50)
+        self.visualization_q19.place(x=0 + 304, y=104, width=50, height=50)
 
         # V kwadrat
-        c.create_rectangle(  0+200,   0+200,  50+200,  50+200, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle( 52+200,   0+200, 102+200,  50+200, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle(104+200,   0+200, 154+200,  50+200, outline="#ffffff", fill="#ffffff")
+        self.visualization_q21 = StringVar()
+        self.visualization_q22 = StringVar()
+        self.visualization_q23 = StringVar()
+        self.visualization_q24 = StringVar()
+        self.visualization_q25 = StringVar()
+        self.visualization_q26 = StringVar()
+        self.visualization_q27 = StringVar()
+        self.visualization_q28 = StringVar()
+        self.visualization_q29 = StringVar()
 
-        c.create_rectangle(  0+200,  52+200,  50+200, 102+200, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle( 52+200,  52+200, 102+200, 102+200, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle(104+200,  52+200, 154+200, 102+200, outline="#ffffff", fill="#ffffff")
+        self.visualization_q21 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q21,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q22 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q22,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q23 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q23,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q24 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q24,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q25 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q25,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q26 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q26,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q27 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q27,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q28 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q28,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q29 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q29,
+                                           state='readonly', readonlybackground='#FFFFFF')
 
-        c.create_rectangle(  0+200, 104+200,  50+200, 154+200, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle( 52+200, 104+200, 102+200, 154+200, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle(104+200, 104+200, 154+200, 154+200, outline="#ffffff", fill="#ffffff")
+        self.visualization_q21.place(x=0 + 200, y=0+180, width=50, height=50)
+        self.visualization_q22.place(x=0 + 252, y=0+180, width=50, height=50)
+        self.visualization_q23.place(x=0 + 304, y=0+180, width=50, height=50)
+        self.visualization_q24.place(x=0 + 200, y=52+180, width=50, height=50)
+        self.visualization_q25.place(x=0 + 252, y=52+180, width=50, height=50)
+        self.visualization_q26.place(x=0 + 304, y=52+180, width=50, height=50)
+        self.visualization_q27.place(x=0 + 200, y=104+180, width=50, height=50)
+        self.visualization_q28.place(x=0 + 252, y=104+180, width=50, height=50)
+        self.visualization_q29.place(x=0 + 304, y=104+180, width=50, height=50)
 
         # VI kwadrat
-        c.create_rectangle(  0+200,   0+400,  50+200,  50+400, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle( 52+200,   0+400, 102+200,  50+400, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle(104+200,   0+400, 154+200,  50+400, outline="#ffffff", fill="#ffffff")
+        self.visualization_q31 = StringVar()
+        self.visualization_q32 = StringVar()
+        self.visualization_q33 = StringVar()
+        self.visualization_q34 = StringVar()
+        self.visualization_q35 = StringVar()
+        self.visualization_q36 = StringVar()
+        self.visualization_q37 = StringVar()
+        self.visualization_q38 = StringVar()
+        self.visualization_q39 = StringVar()
 
-        c.create_rectangle(  0+200,  52+400,  50+200, 102+400, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle( 52+200,  52+400, 102+200, 102+400, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle(104+200,  52+400, 154+200, 102+400, outline="#ffffff", fill="#ffffff")
+        self.visualization_q31 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q31,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q32 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q32,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q33 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q33,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q34 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q34,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q35 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q35,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q36 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q36,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q37 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q37,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q38 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q38,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_q39 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_q39,
+                                           state='readonly', readonlybackground='#FFFFFF')
 
-        c.create_rectangle(  0+200, 104+400,  50, 154+400, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle( 52+200, 104+400, 102, 154+400, outline="#ffffff", fill="#ffffff")
-        c.create_rectangle(104+200, 104+400, 154, 154+400, outline="#ffffff", fill="#ffffff")
+        self.visualization_q31.place(x=0 + 200, y=0+360, width=50, height=50)
+        self.visualization_q32.place(x=0 + 252, y=0+360, width=50, height=50)
+        self.visualization_q33.place(x=0 + 304, y=0+360, width=50, height=50)
+        self.visualization_q34.place(x=0 + 200, y=52+360, width=50, height=50)
+        self.visualization_q35.place(x=0 + 252, y=52+360, width=50, height=50)
+        self.visualization_q36.place(x=0 + 304, y=52+360, width=50, height=50)
+        self.visualization_q37.place(x=0 + 200, y=104+360, width=50, height=50)
+        self.visualization_q38.place(x=0 + 252, y=104+360, width=50, height=50)
+        self.visualization_q39.place(x=0 + 304, y=104+360, width=50, height=50)
 
+
+        # Neuron Answers
+        self.visualization_N1 = StringVar()
+        self.visualization_N2 = StringVar()
+        self.visualization_N3 = StringVar()
+
+        self.visualization_N1Active = StringVar()
+        self.visualization_N2Active = StringVar()
+        self.visualization_N3Active = StringVar()
+
+        self.visualization_N1 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_N1,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_N2 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_N2,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_N3 = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_N3,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_N1Active = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_N1Active,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_N2Active = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_N2Active,
+                                           state='readonly', readonlybackground='#FFFFFF')
+        self.visualization_N3Active = Entry(self.visualization_frame, justify=CENTER,
+                                           textvariable=self.visualization_N3Active,
+                                           state='readonly', readonlybackground='#FFFFFF')
+
+        self.visualization_N1_label = Label(self.visualization_frame, text='Wyjście 1 neuronu')
+        self.visualization_N1_label.place(x=20 + 356, y=0, height=25)
+        self.visualization_N1.place(x=50 + 356, y=26, width=50, height=50)
+        self.visualization_N1Active.place(x=50 + 356, y=78, width=50, height=50)
+        self.visualization_N1Active_label = Label(self.visualization_frame, text='Aktywacja 1 neuronu')
+        self.visualization_N1Active_label.place(x=20 + 356, y=78+50, height=25)
+
+        self.visualization_N2_label = Label(self.visualization_frame, text='Wyjście 2 neuronu')
+        self.visualization_N2_label.place(x=20 + 356, y=180, height=25)
+        self.visualization_N2.place(x=50 + 356, y=26+180, width=50, height=50)
+        self.visualization_N2Active.place(x=50 + 356, y=78+180, width=50, height=50)
+        self.visualization_N2Active_label = Label(self.visualization_frame, text='Aktywacja 2 neuronu')
+        self.visualization_N2Active_label.place(x=20 + 356, y=78+180+50, height=25)
+
+        self.visualization_N3_label = Label(self.visualization_frame, text='Wyjście 3 neuronu')
+        self.visualization_N3_label.place(x=20 + 356, y=360, height=25)
+        self.visualization_N3.place(x=50 + 356, y=26+360, width=50, height=50)
+        self.visualization_N3Active.place(x=50 + 356, y=78+360, width=50, height=50)
+        self.visualization_N3Active_label = Label(self.visualization_frame, text='Aktywacja 3 neuronu')
+        self.visualization_N3Active_label.place(x=20 + 356, y=78+360+50, height=25)
+
+        c.pack(fill=BOTH, expand=1)
 
     def __create_visualization_options_widgets(self):
         self.visualization_options_frame = LabelFrame(self.frame, text='Opcje wyświetlania', width=500, height=70)
@@ -291,6 +520,3 @@ class Gui:
         self.number_of_actualization_entry = Entry(self.visualization_options_frame, justify=CENTER,textvariable=self.number_of_actualization_var)
         self.number_of_actualization_entry.insert(0, '10')
         self.number_of_actualization_entry.place(x=250, y=15, width=70, height=25)
-
-if __name__ == '__main__':
-    gui = Gui()
