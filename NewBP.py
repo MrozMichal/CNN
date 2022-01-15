@@ -1,11 +1,13 @@
 # Backprop on the Seeds Dataset
+import random
 from random import seed
 from random import randrange
-from random import random
+#from random import random
+from random import uniform
 from csv import reader
 from math import exp
 import copy
-
+prev_weights=list()
 
 # Load a CSV file
 def load_csv(filename):
@@ -69,7 +71,7 @@ def accuracy_metric(actual, predicted):
 
 
 # Evaluate an algorithm using a cross validation split
-def evaluate_algorithm(dataset, algorithm, n_folds, *args):
+def evaluate_algorithm(dataset, algorithm, n_folds, *args,rand_range,momentum,bias):
     folds = cross_validation_split(dataset, n_folds)
     scores = list()
     for fold in folds:
@@ -83,7 +85,7 @@ def evaluate_algorithm(dataset, algorithm, n_folds, *args):
             row_copy = list(row)
             test_set.append(row_copy)
             row_copy[-1] = None
-        predicted = algorithm(train_set, test_set, *args)
+        predicted = algorithm(train_set, test_set, *args,rand_range,momentum,bias)
         actual = [row[-1] for row in fold]
         accuracy = accuracy_metric(actual, predicted)
         scores.append(accuracy)
@@ -142,42 +144,41 @@ def backward_propagate_error(network, expected):
 
 
 # Update network weights with error
-def update_weights(network, row, l_rate):
+def update_weights(network, row, l_rate,momentum,bias):
     for i in range(len(network)):
-        #print(i)
         inputs = row[:-1]
         if i != 0:
             inputs = [neuron['output'] for neuron in network[i - 1]]
         for neuron in network[i]:
             #print(inputs)
             for j in range(len(inputs)):
-                #print('ok')
-                neuron['weights'][j] -= l_rate * neuron['delta'] * inputs[j]
-                #print(neuron['weights'])
-                #print('ok')
+                #neuron['weights'][j] -= l_rate * neuron['delta'] * inputs[j]
+                buffor=neuron['weights'][j]
+                neuron['weights'][j] -= (l_rate * neuron['delta'] * inputs[j]+momentum*(neuron['weights'][j]-neuron['prev_weights'][j]))+bias
+                neuron['prev_weights'][j] = buffor
             neuron['weights'][-1] -= l_rate * neuron['delta']
 
 
 # Train a network for a fixed number of epochs
-def train_network(network, train, l_rate, n_epoch, n_outputs):
+def train_network(network, train, l_rate, n_epoch, n_outputs,momentum):
     for epoch in range(n_epoch):
         for row in train:
             outputs = forward_propagate(network, row)
             expected = [0 for i in range(n_outputs)]
             expected[row[-1]] = 1
             backward_propagate_error(network, expected)
-            update_weights(network, row, l_rate)
+            update_weights(network, row, l_rate,momentum,bias)
     for i in range(len(network)):
         for neuron in network[i]:
                 print(neuron['weights'])
 
 
 # Initialize a network
-def initialize_network(n_inputs, n_hidden, n_outputs):
+def initialize_network(n_inputs, n_hidden, n_outputs,rand_range):
     network = list()
-    hidden_layer = [{'weights': [random() for i in range(n_inputs + 1)]} for i in range(n_hidden)]
+    hidden_layer = [{'weights': [random.uniform(-rand_range,rand_range) for i in range(n_inputs + 1)],'prev_weights': [0 for i in range(n_inputs + 1)]} for i in range(n_hidden)]
     network.append(hidden_layer)
-    output_layer = [{'weights': [random() for i in range(n_hidden + 1)]} for i in range(n_outputs)]
+    output_layer = [{'weights': [random.uniform(-rand_range,rand_range) for i in range(n_hidden + 1)],'prev_weights': [0 for i in range(n_hidden + 1)]} for i in range(n_outputs)]
     network.append(output_layer)
     return network
 
@@ -189,11 +190,11 @@ def predict(network, row):
 
 
 # Backpropagation Algorithm With Stochastic Gradient Descent
-def back_propagation(train, test, l_rate, n_epoch, n_hidden):
+def back_propagation(train, test, l_rate, n_epoch, n_hidden,rand_range,momentum,bias):
     n_inputs = len(train[0]) - 1
     n_outputs = len(set([row[-1] for row in train]))
-    network = initialize_network(n_inputs, n_hidden, n_outputs)
-    train_network(network, train, l_rate, n_epoch, n_outputs)
+    network = initialize_network(n_inputs, n_hidden, n_outputs,rand_range)
+    train_network(network, train, l_rate, n_epoch, n_outputs,momentum)
     predictions = list()
     #Zmienione
     # predictions.append(predict(network, [1,1,1,0,1,0,0,1,0,0]))
@@ -255,11 +256,13 @@ n_folds = 1
 l_rate = 0.9
 n_epoch = 10000
 n_hidden = 1
+momentum=0.1
+bias=0.00001
 
 
-scores = evaluate_algorithm(dataset, back_propagation, n_folds, l_rate, n_epoch, n_hidden)
-scores2 = evaluate_algorithm(dataset2, back_propagation, n_folds, l_rate, n_epoch, n_hidden)
-scores3 = evaluate_algorithm(dataset3, back_propagation, n_folds, l_rate, n_epoch, n_hidden)
+scores = evaluate_algorithm(dataset, back_propagation, n_folds, l_rate, n_epoch, n_hidden,rand_range=0.1,momentum=0.1,bias=0)
+scores2 = evaluate_algorithm(dataset2, back_propagation, n_folds, l_rate, n_epoch, n_hidden,rand_range=0.1,momentum=0.1,bias=0)
+scores3 = evaluate_algorithm(dataset3, back_propagation, n_folds, l_rate, n_epoch, n_hidden,rand_range=0.1,momentum=0.1,bias=0)
 
 
 print('Scores: %s' % scores)
