@@ -82,10 +82,6 @@ class Gui:
         self.frame.geometry('1170x660')
         #self.frame.geometry('1170x660+%d+%d' % ((screen_width - 1170) / 2, (screen_height - 660) / 2))
         self.frame.grid_propagate(False)
-        self.train_dataset = None
-        self.train_dataset2 = None
-        self.train_dataset3 = None
-        self.test_dataset = None
 
         # Ustawianie stanu wczytania pliku uczacego i testowego
         self.train_var_state = False
@@ -356,51 +352,21 @@ class Gui:
         #self.visualization_frame = LabelFrame(self.frame, text='Wizualizacja',width=500, height=850)
         self.visualization_frame.place(x=620, y=15,width=500, height=550)
 
-        c = Canvas(self.visualization_frame)
-        c.pack(fill=BOTH, expand=1)
+        self.c = Canvas(self.visualization_frame)
+        self.c.pack(fill=BOTH, expand=1)
         #outline="#ffff00", fill="#ffff00")   # żółty
         #outline="#ffffff", fill="#ffffff")   # biały
         #outline="#808080", fill="#808080")   # szary
         #outline="#000000", fill="#000000")   # czarny
 
-        # I kwadrat
-        c.create_rectangle(  0,   0,  50,  50, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,   0, 102,  50, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,   0, 154,  50, outline="#000000", fill="#ffffff")
+        coords = [[0, 0],[52, 0],[104, 0],[0, 52],[52, 52],[104, 52],[0, 104],[52, 104],[104, 104]]
+        offset = [0, 180, 360]
+        width = 50
 
-        c.create_rectangle(  0,  52,  50, 102, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,  52, 102, 102, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,  52, 154, 102, outline="#000000", fill="#ffffff")
-
-        c.create_rectangle(  0, 104,  50, 154, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52, 104, 102, 154, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104, 104, 154, 154, outline="#000000", fill="#ffffff")
-
-        # II kwadrat
-        c.create_rectangle(  0,   0+180,  50,  50+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,   0+180, 102,  50+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,   0+180, 154,  50+180, outline="#000000", fill="#ffffff")
-
-        c.create_rectangle(  0,  52+180,  50, 102+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,  52+180, 102, 102+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,  52+180, 154, 102+180, outline="#000000", fill="#ffffff")
-
-        c.create_rectangle(  0, 104+180,  50, 154+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52, 104+180, 102, 154+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104, 104+180, 154, 154+180, outline="#000000", fill="#ffffff")
-
-        # III kwadrat
-        c.create_rectangle(  0,   0+360,  50,  50+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,   0+360, 102,  50+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,   0+360, 154,  50+360, outline="#000000", fill="#ffffff")
-
-        c.create_rectangle(  0,  52+360,  50, 102+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,  52+360, 102, 102+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,  52+360, 154, 102+360, outline="#000000", fill="#ffffff")
-
-        c.create_rectangle(  0, 104+360,  50, 154+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52, 104+360, 102, 154+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104, 104+360, 154, 154+360, outline="#000000", fill="#ffffff")
+        #kwadraty
+        for of in offset:
+            for co in coords:
+                self.c.create_rectangle(co[0], co[1]+of, co[0]+width, co[1]+width+of, outline="#000000", fill="#ffffff")
 
         ## WYNIKI LICZBOWE
 
@@ -416,23 +382,32 @@ class Gui:
         self.visualization_q19 = StringVar()
 
         self.visualization_q11 = Entry(self.visualization_frame, justify=CENTER,
-                                            textvariable=self.visualization_q11, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q11,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q12 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q12, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q12,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q13 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q13, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q13,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q14 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q14, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q14,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q15 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q15, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q15,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q16 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q16, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q16,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q17 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q17, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q17,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q18 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q18, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q18,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q19 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q19, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q19,
+                                           state='readonly', readonlybackground='#FFFFFF')
 
         self.visualization_q11.place(x=0 + 200, y=0, width=50, height=50)
         self.visualization_q12.place(x=0 + 252, y=0, width=50, height=50)
@@ -456,23 +431,32 @@ class Gui:
         self.visualization_q29 = StringVar()
 
         self.visualization_q21 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q21, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q21,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q22 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q22, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q22,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q23 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q23, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q23,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q24 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q24, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q24,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q25 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q25, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q25,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q26 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q26, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q26,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q27 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q27, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q27,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q28 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q28, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q28,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q29 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q29, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q29,
+                                           state='readonly', readonlybackground='#FFFFFF')
 
         self.visualization_q21.place(x=0 + 200, y=0+180, width=50, height=50)
         self.visualization_q22.place(x=0 + 252, y=0+180, width=50, height=50)
@@ -496,23 +480,32 @@ class Gui:
         self.visualization_q39 = StringVar()
 
         self.visualization_q31 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q31, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q31,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q32 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q32, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q32,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q33 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q33, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q33,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q34 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q34, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q34,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q35 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q35, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q35,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q36 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q36, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q36,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q37 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q37, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q37,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q38 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q38, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q38,
+                                           state='readonly', readonlybackground='#FFFFFF')
         self.visualization_q39 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q39, readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q39,
+                                           state='readonly', readonlybackground='#FFFFFF')
 
         self.visualization_q31.place(x=0 + 200, y=0+360, width=50, height=50)
         self.visualization_q32.place(x=0 + 252, y=0+360, width=50, height=50)
@@ -574,7 +567,7 @@ class Gui:
         self.visualization_N3Active_label = Label(self.visualization_frame, text='Aktywacja 3 neuronu')
         self.visualization_N3Active_label.place(x=20 + 356, y=78+360+50, height=25)
 
-        c.pack(fill=BOTH, expand=1)
+        self.c.pack(fill=BOTH, expand=1)
 
     def __create_visualization_options_widgets(self):
         self.visualization_options_frame = LabelFrame(self.frame, text='Opcje wyświetlania', width=500, height=70)
@@ -592,60 +585,21 @@ class Gui:
         self.num_epoch=self.number_of_epochs_var.get()
         self.lear_rate=self.learning_rate_var.get()
 
-        if self.train_dataset == None or self.train_dataset2 == None or self.train_dataset3 == None:
-            return messagebox.showinfo('Message', f'Network CANNOT be Initialized. Read the train file first.')
-        else:
-            self.network1, self.output_wages1 = NN.initialize_network(self,self.train_dataset,self.test_dataset)
-            self.network2, self.output_wages2 = NN.initialize_network(self,self.train_dataset2,self.test_dataset)
-            self.network3, self.output_wages3 = NN.initialize_network(self,self.train_dataset3,self.test_dataset)
-
-            self.visualization_q11.insert(0,f'{round(self.output_wages1[0],3)}')
-            self.visualization_q12.insert(0,f'{round(self.output_wages1[1],3)}')
-            self.visualization_q13.insert(0,f'{round(self.output_wages1[2],3)}')
-            self.visualization_q14.insert(0,f'{round(self.output_wages1[3],3)}')
-            self.visualization_q15.insert(0,f'{round(self.output_wages1[4],3)}')
-            self.visualization_q16.insert(0,f'{round(self.output_wages1[5],3)}')
-            self.visualization_q17.insert(0,f'{round(self.output_wages1[6],3)}')
-            self.visualization_q18.insert(0,f'{round(self.output_wages1[7],3)}')
-            self.visualization_q19.insert(0,f'{round(self.output_wages1[8],3)}')
-
-            self.visualization_q21.insert(0,f'{round(self.output_wages2[0],3)}')
-            self.visualization_q22.insert(0,f'{round(self.output_wages2[1],3)}')
-            self.visualization_q23.insert(0,f'{round(self.output_wages2[2],3)}')
-            self.visualization_q24.insert(0,f'{round(self.output_wages2[3],3)}')
-            self.visualization_q25.insert(0,f'{round(self.output_wages2[4],3)}')
-            self.visualization_q26.insert(0,f'{round(self.output_wages2[5],3)}')
-            self.visualization_q27.insert(0,f'{round(self.output_wages2[6],3)}')
-            self.visualization_q28.insert(0,f'{round(self.output_wages2[7],3)}')
-            self.visualization_q29.insert(0,f'{round(self.output_wages2[8],3)}')
-
-            self.visualization_q31.insert(0,f'{round(self.output_wages3[0],3)}')
-            self.visualization_q32.insert(0,f'{round(self.output_wages3[1],3)}')
-            self.visualization_q33.insert(0,f'{round(self.output_wages3[2],3)}')
-            self.visualization_q34.insert(0,f'{round(self.output_wages3[3],3)}')
-            self.visualization_q35.insert(0,f'{round(self.output_wages3[4],3)}')
-            self.visualization_q36.insert(0,f'{round(self.output_wages3[5],3)}')
-            self.visualization_q37.insert(0,f'{round(self.output_wages3[6],3)}')
-            self.visualization_q38.insert(0,f'{round(self.output_wages3[7],3)}')
-            self.visualization_q39.insert(0,f'{round(self.output_wages3[8],3)}')
-
-            print(self.hidden_layer)
-            print(self.n_inputs)
-            print(self.output_layer)
-            print(self.n_outputs)
-
-
-            return messagebox.showinfo('Message', f'Network has been INITIALIZED.')
+        print(self.random_wages)
+        print(self.num_epoch)
+        print(self.lear_rate)
+        return messagebox.showinfo('Message', f'Network has been INITIALIZED.')
 
     def __train_network(self):
-        #self.__visualization()
+        self.__visualization()
         if self.network is None:
             messagebox.showerror('Sieć nie istnieje', 'Przed rozpoczęciem trenowania sieci należy ją utworzyć')
             return
 
     def __visualization(self):
-        c = Canvas(self.visualization_frame)
-        c.pack(fill=BOTH, expand=1)
+        # c = Canvas(self.visualization_frame)
+        # c.pack(side=LEFT, expand=1)
+
         # outline="#ffff00", fill="#ffff00")   # żółty
         # outline="#ffffff", fill="#ffffff")   # biały
         # outline="#808080", fill="#808080")   # szary
@@ -655,129 +609,20 @@ class Gui:
         BLACK = "#000000"
 
 
-        weight=[0.2,1.2,-0.3,-1.2,1,0.9,-0.4,0,-0.9]
+        weight = [0.2,1.2,-0.3,-1.2,1,0.9,-0.4,0,-0.9]
+        coords = [[0, 0, 50, 50],[52, 0, 102, 50],[104, 0, 154, 50],[0, 52, 50, 102],[52, 52, 102, 102],[104, 52, 154, 102],[0, 104, 50, 154],[52, 104, 102, 154],[104, 104, 154, 154]]
+        width = 50
 
-        # KWADRAT 1.1
-        if weight[0] > 1:
-            COLOR = GOLD
-        elif weight[0] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
+        #kwadraty
+        for i in range(9):
+            self.c.create_rectangle(coords[i][0], coords[i][1], coords[i][0]+width, coords[i][1]+width, outline="#000000", fill=BLACK)
 
-        c.create_rectangle(0, 0, 50, 50, outline="#000000", fill=COLOR)
+            if weight[i] > 0:
+                COLOR = GOLD
+            else:
+                COLOR=GREY
 
-        # KWADRAT 1.2
-        if weight[1] > 1:
-            COLOR = GOLD
-        elif weight[1] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-
-        c.create_rectangle(52, 0, 102, 50, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.3
-        if weight[2] > 1:
-            COLOR = GOLD
-        elif weight[2] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-
-        c.create_rectangle(104, 0, 154, 50, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.4
-        if weight[3] > 1:
-            COLOR = GOLD
-        elif weight[3] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(0, 52, 50, 102, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.5
-        if weight[4] > 1:
-            COLOR = GOLD
-        elif weight[4] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(52, 52, 102, 102, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.6
-        if weight[5] > 1:
-            COLOR = GOLD
-        elif weight[5] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(104, 52, 154, 102, outline="#000000", fill=COLOR)
-
-
-        # KWADRAT 1.7
-        if weight[6] > 1:
-            COLOR = GOLD
-        elif weight[6] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(0, 104, 50, 154, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.8
-        if weight[7] > 1:
-            COLOR = GOLD
-        elif weight[7] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(52, 104, 102, 154, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.9
-        if weight[8] > 1:
-            COLOR = GOLD
-        elif weight[8] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(104, 104, 154, 154, outline="#000000", fill=COLOR)
-
-        """
-        # I kwadrat
-        c.create_rectangle(0, 0, 50, 50, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 0, 102, 50, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 0, 154, 50, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 52, 50, 102, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 52, 102, 102, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 52, 154, 102, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 104, 50, 154, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 104, 102, 154, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 104, 154, 154, outline="#000000", fill=COLOR)
-        """
-        # II kwadrat
-        c.create_rectangle(0, 0 + 180, 50, 50 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 0 + 180, 102, 50 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 0 + 180, 154, 50 + 180, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 52 + 180, 50, 102 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 52 + 180, 102, 102 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 52 + 180, 154, 102 + 180, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 104 + 180, 50, 154 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 104 + 180, 102, 154 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 104 + 180, 154, 154 + 180, outline="#000000", fill=COLOR)
-
-        # III kwadrat
-        c.create_rectangle(0, 0 + 360, 50, 50 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 0 + 360, 102, 50 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 0 + 360, 154, 50 + 360, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 52 + 360, 50, 102 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 52 + 360, 102, 102 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 52 + 360, 154, 102 + 360, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 104 + 360, 50, 154 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 104 + 360, 102, 154 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 104 + 360, 154, 154 + 360, outline="#000000", fill=COLOR)
+            if -1 <= weight[i] <= 1:
+                self.c.create_rectangle(coords[i][0], coords[i][1], coords[i][0]+abs(weight[i])*50, coords[i][1]+abs(weight[i])*50, outline="#000000", fill=COLOR)
+            else:
+                self.c.create_rectangle(coords[i][0], coords[i][1], coords[i][0]+width, coords[i][1]+width, outline="#000000", fill=COLOR)
