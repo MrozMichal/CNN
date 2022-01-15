@@ -82,6 +82,10 @@ class Gui:
         self.frame.geometry('1170x660')
         #self.frame.geometry('1170x660+%d+%d' % ((screen_width - 1170) / 2, (screen_height - 660) / 2))
         self.frame.grid_propagate(False)
+        self.train_dataset = None
+        self.train_dataset2 = None
+        self.train_dataset3 = None
+        self.test_dataset = None
 
         # Ustawianie stanu wczytania pliku uczacego i testowego
         self.train_var_state = False
@@ -412,32 +416,23 @@ class Gui:
         self.visualization_q19 = StringVar()
 
         self.visualization_q11 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q11,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                            textvariable=self.visualization_q11, readonlybackground='#FFFFFF')
         self.visualization_q12 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q12,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q12, readonlybackground='#FFFFFF')
         self.visualization_q13 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q13,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q13, readonlybackground='#FFFFFF')
         self.visualization_q14 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q14,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q14, readonlybackground='#FFFFFF')
         self.visualization_q15 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q15,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q15, readonlybackground='#FFFFFF')
         self.visualization_q16 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q16,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q16, readonlybackground='#FFFFFF')
         self.visualization_q17 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q17,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q17, readonlybackground='#FFFFFF')
         self.visualization_q18 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q18,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q18, readonlybackground='#FFFFFF')
         self.visualization_q19 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q19,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q19, readonlybackground='#FFFFFF')
 
         self.visualization_q11.place(x=0 + 200, y=0, width=50, height=50)
         self.visualization_q12.place(x=0 + 252, y=0, width=50, height=50)
@@ -461,32 +456,23 @@ class Gui:
         self.visualization_q29 = StringVar()
 
         self.visualization_q21 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q21,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q21, readonlybackground='#FFFFFF')
         self.visualization_q22 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q22,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q22, readonlybackground='#FFFFFF')
         self.visualization_q23 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q23,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q23, readonlybackground='#FFFFFF')
         self.visualization_q24 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q24,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q24, readonlybackground='#FFFFFF')
         self.visualization_q25 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q25,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q25, readonlybackground='#FFFFFF')
         self.visualization_q26 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q26,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q26, readonlybackground='#FFFFFF')
         self.visualization_q27 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q27,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q27, readonlybackground='#FFFFFF')
         self.visualization_q28 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q28,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q28, readonlybackground='#FFFFFF')
         self.visualization_q29 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q29,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q29, readonlybackground='#FFFFFF')
 
         self.visualization_q21.place(x=0 + 200, y=0+180, width=50, height=50)
         self.visualization_q22.place(x=0 + 252, y=0+180, width=50, height=50)
@@ -510,32 +496,23 @@ class Gui:
         self.visualization_q39 = StringVar()
 
         self.visualization_q31 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q31,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q31, readonlybackground='#FFFFFF')
         self.visualization_q32 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q32,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q32, readonlybackground='#FFFFFF')
         self.visualization_q33 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q33,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q33, readonlybackground='#FFFFFF')
         self.visualization_q34 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q34,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q34, readonlybackground='#FFFFFF')
         self.visualization_q35 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q35,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q35, readonlybackground='#FFFFFF')
         self.visualization_q36 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q36,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q36, readonlybackground='#FFFFFF')
         self.visualization_q37 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q37,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q37, readonlybackground='#FFFFFF')
         self.visualization_q38 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q38,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q38, readonlybackground='#FFFFFF')
         self.visualization_q39 = Entry(self.visualization_frame, justify=CENTER,
-                                           textvariable=self.visualization_q39,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           textvariable=self.visualization_q39, readonlybackground='#FFFFFF')
 
         self.visualization_q31.place(x=0 + 200, y=0+360, width=50, height=50)
         self.visualization_q32.place(x=0 + 252, y=0+360, width=50, height=50)
@@ -615,13 +592,53 @@ class Gui:
         self.num_epoch=self.number_of_epochs_var.get()
         self.lear_rate=self.learning_rate_var.get()
 
-        print(self.random_wages)
-        print(self.num_epoch)
-        print(self.lear_rate)
-        return messagebox.showinfo('Message', f'Network has been INITIALIZED.')
+        if self.train_dataset == None or self.train_dataset2 == None or self.train_dataset3 == None:
+            return messagebox.showinfo('Message', f'Network CANNOT be Initialized. Read the train file first.')
+        else:
+            self.network1, self.output_wages1 = NN.initialize_network(self,self.train_dataset,self.test_dataset)
+            self.network2, self.output_wages2 = NN.initialize_network(self,self.train_dataset2,self.test_dataset)
+            self.network3, self.output_wages3 = NN.initialize_network(self,self.train_dataset3,self.test_dataset)
+
+            self.visualization_q11.insert(0,f'{round(self.output_wages1[0],3)}')
+            self.visualization_q12.insert(0,f'{round(self.output_wages1[1],3)}')
+            self.visualization_q13.insert(0,f'{round(self.output_wages1[2],3)}')
+            self.visualization_q14.insert(0,f'{round(self.output_wages1[3],3)}')
+            self.visualization_q15.insert(0,f'{round(self.output_wages1[4],3)}')
+            self.visualization_q16.insert(0,f'{round(self.output_wages1[5],3)}')
+            self.visualization_q17.insert(0,f'{round(self.output_wages1[6],3)}')
+            self.visualization_q18.insert(0,f'{round(self.output_wages1[7],3)}')
+            self.visualization_q19.insert(0,f'{round(self.output_wages1[8],3)}')
+
+            self.visualization_q21.insert(0,f'{round(self.output_wages2[0],3)}')
+            self.visualization_q22.insert(0,f'{round(self.output_wages2[1],3)}')
+            self.visualization_q23.insert(0,f'{round(self.output_wages2[2],3)}')
+            self.visualization_q24.insert(0,f'{round(self.output_wages2[3],3)}')
+            self.visualization_q25.insert(0,f'{round(self.output_wages2[4],3)}')
+            self.visualization_q26.insert(0,f'{round(self.output_wages2[5],3)}')
+            self.visualization_q27.insert(0,f'{round(self.output_wages2[6],3)}')
+            self.visualization_q28.insert(0,f'{round(self.output_wages2[7],3)}')
+            self.visualization_q29.insert(0,f'{round(self.output_wages2[8],3)}')
+
+            self.visualization_q31.insert(0,f'{round(self.output_wages3[0],3)}')
+            self.visualization_q32.insert(0,f'{round(self.output_wages3[1],3)}')
+            self.visualization_q33.insert(0,f'{round(self.output_wages3[2],3)}')
+            self.visualization_q34.insert(0,f'{round(self.output_wages3[3],3)}')
+            self.visualization_q35.insert(0,f'{round(self.output_wages3[4],3)}')
+            self.visualization_q36.insert(0,f'{round(self.output_wages3[5],3)}')
+            self.visualization_q37.insert(0,f'{round(self.output_wages3[6],3)}')
+            self.visualization_q38.insert(0,f'{round(self.output_wages3[7],3)}')
+            self.visualization_q39.insert(0,f'{round(self.output_wages3[8],3)}')
+
+            print(self.hidden_layer)
+            print(self.n_inputs)
+            print(self.output_layer)
+            print(self.n_outputs)
+
+
+            return messagebox.showinfo('Message', f'Network has been INITIALIZED.')
 
     def __train_network(self):
-        self.__visualization()
+        #self.__visualization()
         if self.network is None:
             messagebox.showerror('Sieć nie istnieje', 'Przed rozpoczęciem trenowania sieci należy ją utworzyć')
             return
