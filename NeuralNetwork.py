@@ -14,12 +14,12 @@ class NeuralNetwork:
         self.model.add(layers.Dense(1, activation=self.activations_list[activation_ind], input_shape=(2,)))
         self.training_history = None
 
-    def cross_validation_split(self,dataset, n_folds):
+    def cross_validation_split(self):
         dataset_split = list()
-        dataset_copy = list(dataset)
-        fold_size = int(len(dataset) / n_folds)
+        dataset_copy = list(self.train_dataset)
+        fold_size = int(len(self.train_dataset) / self.n_folds)
 
-        for i in range(n_folds):
+        for i in range(self.n_folds):
             fold = list()
             while len(fold) < fold_size:
                 index = randrange(len(dataset_copy))
@@ -28,147 +28,142 @@ class NeuralNetwork:
         return dataset_split
 
 
-    def accuracy_metric(actual, predicted):
-        correct = 0
-        for i in range(len(actual)):
-            if actual[i] == predicted[i]:
-                correct += 1
-        return correct / float(len(actual)) * 100.0
+    def accuracy_metric(self):
+        self.correct = 0
+        for i in range(len(self.actual)):
+            if self.actual[i] == self.predicted[i]:
+                self.correct += 1
+        return self.correct / float(len(self.actual)) * 100.0
 
 
-    def evaluate_algorithm(self, dataset, algorithm, n_folds, l_rate, n_epoch, network, folds, *args,rand_range,momentum,bias):
-        #folds = cross_validation_split(self,dataset, n_folds)
-        scores = list()
-        print("przed petla for w evaluate")
-        for fold in folds:
-            train_set = list(folds)
-            #Zmienione
-            #train_set.remove(fold)
-            #
-            train_set = sum(train_set, [])
-            test_set = list()
-            for row in fold:
+    def evaluate_algorithm(self):
+        self.scores = list()
+        for self.fold in self.folds:
+            self.train_set = list(self.folds)
+            self.train_set = sum(self.train_set, [])
+            self.test_set = list()
+            for row in self.fold:
                 row_copy = list(row)
-                test_set.append(row_copy)
+                self.test_set.append(row_copy)
                 row_copy[-1] = None
-            predicted = algorithm(self,train_set, test_set, l_rate, n_epoch, network, *args,rand_range,momentum,bias)
-            actual = [row[-1] for row in fold]
-            accuracy = accuracy_metric(actual, predicted)
-            scores.append(accuracy)
-        return scores
+            self.predicted = back_propagation(self)
+            self.actual = [row[-1] for row in fold]
+            self.accuracy = accuracy_metric(self)
+            self.scores.append(self.accuracy)
+        return self.scores
 
 
-    def activate(weights, inputs):
-        activation = weights[-1]
-        for i in range(len(weights) - 1):
-            activation += weights[i] * inputs[i]
-        return activation
+    def activate(self):
+        self.activation = self.activate_weights[-1]
+        for i in range(len(self.activate_weights) - 1):
+            self.activation += self.activate_weights[i] * self.inputs[i]
+        return self.activation
 
 
-    def transfer(activation):
-        return 1.0 / (1.0 + exp(-activation))
+    def transfer(self):
+        return 1.0 / (1.0 + exp(-self.activation))
 
 
-    def forward_propagate(network, row):
-        inputs = row
-        for layer in network:
-            new_inputs = []
-            for neuron in layer:
-                activation = activate(neuron['weights'], inputs)
-                neuron['output'] = transfer(activation)
-                new_inputs.append(neuron['output'])
-            inputs = new_inputs
-        return inputs
+    def forward_propagate(self):
+        self.inputs = self.row_train
+        for self.layer1 in self.network1:
+            self.new_inputs1 = []
+            for self.neuron1 in self.layer1:
+                self.activate_weights = self.neuron1['weights']
+                self.activation = activate(self.activate_weights, self.inputs)
+                self.neuron1['output'] = transfer(self)
+                self.new_inputs1.append(self.neuron1['output'])
+            self.inputs1 = self.new_inputs1
+        return self.inputs1
 
 
     def transfer_derivative(output):
         return output * (1.0 - output)
 
 
-    def backward_propagate_error(network, expected):
-        for i in reversed(range(len(network))):
-            layer = network[i]
+    def backward_propagate_error(self):
+        for i in reversed(range(len(self.network1))):
+            layer = self.network1[i]
             errors = list()
-            if i != len(network) - 1:
+            if i != len(self.network1) - 1:
                 for j in range(len(layer)):
                     error = 0.0
-                    for neuron in network[i + 1]:
+                    for neuron in self.network1[i + 1]:
                         error += (neuron['weights'][j] * neuron['delta'])
                     errors.append(error)
             else:
                 for j in range(len(layer)):
                     neuron = layer[j]
-                    errors.append(neuron['output'] - expected[j])
+                    errors.append(neuron['output'] - self.expected[j])
             for j in range(len(layer)):
                 neuron = layer[j]
                 neuron['delta'] = errors[j] * transfer_derivative(neuron['output'])
 
 
-    def update_weights(network, row, l_rate, momentum,bias):
-        for i in range(len(network)):
+    def update_weights(self):
+        for i in range(len(self.network1)):
             #print(i)
-            inputs = row[:-1]
+            inputs = self.row_train[:-1]
             if i != 0:
-                inputs = [neuron['output'] for neuron in network[i - 1]]
-            for neuron in network[i]:
+                inputs = [neuron['output'] for neuron in self.network1[i - 1]]
+            for neuron in self.network1[i]:
                 #print(inputs)
                 for j in range(len(inputs)):
                     # neuron['weights'][j] -= l_rate * neuron['delta'] * inputs[j]
                     buffor = neuron['weights'][j]
-                    neuron['weights'][j] -= (l_rate * neuron['delta'] * inputs[j] + momentum * (
-                                neuron['weights'][j] - neuron['prev_weights'][j])) + bias
+                    neuron['weights'][j] -= (self.lear_rate * neuron['delta'] * inputs[j] + self.momentum * (
+                                neuron['weights'][j] - neuron['prev_weights'][j])) + self.bias
                     neuron['prev_weights'][j] = buffor
-                neuron['weights'][-1] -= l_rate * neuron['delta']
+                neuron['weights'][-1] -= self.lear_rate * neuron['delta']
 
 
-    def train_network(network, train, l_rate, n_epoch, n_outputs, rand_range, bias, momentum):
-        for epoch in range(n_epoch):
-            for row in train:
-                outputs = forward_propagate(network, row)
-                expected = [0 for i in range(n_outputs)]
-                expected[row[-1]] = 1
-                backward_propagate_error(network, expected)
-                update_weights(network, row, l_rate, momentum,bias)
-        for i in range(len(network)):
-            for neuron in network[i]:
-                print(neuron['weights'])
+    def train_network(self):
+        for epoch in range(self.n_epoch):
+            for self.row_train in self.train_dataset:
+                self.outputs = forward_propagate(self)
+                self.expected = [0 for i in range(self.n_outputs)]
+                self.expected[row[-1]] = 1
+                backward_propagate_error(self)
+                update_weights(self)
+        for i in range(len(self.network1)):
+            for self.neuron in self.network1[i]:
+                print(self.neuron['weights'])
 
 
-    def initialize_network(self, train, test, rand_range):
+    def initialize_network(self):
         # Fragment z def.back_propagation
-        self.n_inputs = len(train[0]) - 1
-        self.n_outputs = len(set([row[-1] for row in train]))
+        self.n_inputs = len(self.train_dataset[0]) - 1
+        self.n_outputs = len(set([row[-1] for row in self.train_dataset]))
         self.n_hidden = 1
         # Fragment z def.back_propagation
 
         self.network = list()
-        self.Wages = [random.uniform(-rand_range,rand_range) for i in range(self.n_inputs + 1)]
-        self.hidden_layer = [{'weights': [random.uniform(-rand_range,rand_range) for i in range(self.n_inputs + 1)],'prev_weights': [0 for i in range(self.n_inputs + 1)]} for i in range(self.n_hidden)]
+        self.Wages = [random.uniform(-self.random_wages,self.random_wages) for i in range(self.n_inputs + 1)]
+        self.hidden_layer = [{'weights': [random.uniform(-self.random_wages,self.random_wages) for i in range(self.n_inputs + 1)],'prev_weights': [0 for i in range(self.n_inputs + 1)]} for i in range(self.n_hidden)]
         self.network.append(self.hidden_layer)
-        self.output_layer = [{'weights': [random.uniform(-rand_range,rand_range) for i in range(self.n_hidden + 1)],'prev_weights': [0 for i in range(self.n_hidden + 1)]} for i in range(self.n_outputs)]
+        self.output_layer = [{'weights': [random.uniform(-self.random_wages,self.random_wages) for i in range(self.n_hidden + 1)],'prev_weights': [0 for i in range(self.n_hidden + 1)]} for i in range(self.n_outputs)]
         self.network.append(self.output_layer)
         return self.network, self.Wages
 
 
-    def predict(network, row):
-        outputs = forward_propagate(network, row)
-        return outputs.index(max(outputs))
+    def predict(self):
+        self.outputs = forward_propagate(self)
+        return self.outputs.index(max(outputs))
 
 
-    def back_propagation(self,train, test, l_rate, n_epoch, network,train_network, rand_range, bias, momentum):
+    def back_propagation(self):
         #n_inputs = len(train[0]) - 1
         #n_outputs = len(set([row[-1] for row in train]))
         #network = initialize_network(n_inputs, n_hidden, n_outputs)
 
         #train_network(network, train, l_rate, n_epoch, n_outputs)
-        train_network(self.network1, self.train_dataset, self.lear_rate, self.num_epoch, n_outputs, bias, momentum)
+        train_network(self)
+        self.predictions = list()
 
-        predictions = list()
-
-        for row in test:
-            prediction = predict(network, row)
-            predictions.append(prediction)
-        return (predictions)
+        for self.row_BP in self.test_dataset:
+            self.prediction = NN.predict(self.network1, self.row_BP)
+            self.predictions.append(self.prediction)
+        return (self.predictions)
 
     # Test Backprop on Seeds dataset
     #seed(1)
