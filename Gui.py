@@ -574,13 +574,14 @@ class Gui:
         self.random_wages = float(self.number_of_random_wages_var.get())
         self.num_epoch = float(self.number_of_epochs_var.get())
         self.lear_rate = float(self.learning_rate_var.get())
+        self.n_epoch=int(self.num_epoch)
 
         if self.train_dataset == None or self.train_dataset2 == None or self.train_dataset3 == None:
             return messagebox.showerror('Message', f'Network CANNOT be Initialized. Read the train file first.')
         else:
-            self.network1, self.output_wages1 = NN.initialize_network(self,self.train_dataset,self.test_dataset, rand_range=self.random_wages)
-            self.network2, self.output_wages2 = NN.initialize_network(self,self.train_dataset2,self.test_dataset, rand_range=self.random_wages)
-            self.network3, self.output_wages3 = NN.initialize_network(self,self.train_dataset3,self.test_dataset, rand_range=self.random_wages)
+            self.network1, self.output_wages1 = NN.initialize_network(self)
+            self.network2, self.output_wages2 = NN.initialize_network(self)
+            self.network3, self.output_wages3 = NN.initialize_network(self)
 
             self.visualization_q11.insert(0,f'{round(self.output_wages1[0],3)}')
             self.visualization_q12.insert(0,f'{round(self.output_wages1[1],3)}')
@@ -612,29 +613,141 @@ class Gui:
             self.visualization_q38.insert(0,f'{round(self.output_wages3[7],3)}')
             self.visualization_q39.insert(0,f'{round(self.output_wages3[8],3)}')
 
-            #print(self.hidden_layer)
-            #print(self.n_inputs)
-            #print(self.output_layer)
-            #print(self.n_outputs)
-
             self.check_box_initialize.select()
             return messagebox.showinfo('Message', f'Network has been INITIALIZED.')
 
     def __train_network(self):
+        self.random_wages = float(self.number_of_random_wages_var.get())
+        self.num_epoch = float(self.number_of_epochs_var.get())
+        self.lear_rate = float(self.learning_rate_var.get())
         self.__visualization()
         if self.network is None:
             return messagebox.showerror('Sieć nie istnieje', 'Przed rozpoczęciem trenowania sieci należy ją utworzyć')
         else:
+            self.n_folds = 1
+            self.bias = 0
+            self.momentum = 0
+            self.folds = NN.cross_validation_split(self)
+            ##############
+            # 1_EVALUATE #
+            ##############
+            self.scores = list()
+            for self.fold in self.folds:
+                self.train_set = list(self.folds)
+                self.train_set = sum(self.train_set, [])
+                self.test_set = list()
+                for row in self.fold:
+                    row_copy = list(row)
+                    self.test_set.append(row_copy)
+                    row_copy[-1] = None
 
-            self.folds = NN.cross_validation_split(self,dataset=self.train_dataset, n_folds=1)
-            print(self.folds)
+            #self.predicted = NN.back_propagation(self)
+            ##############
+            # 2_BACK PRO #
+            ##############
 
-            self.scores1 = NN.evaluate_algorithm(self, dataset=self.train_dataset,
-                                                 algorithm=NN.back_propagation(self,train=self.train_dataset, test=self.test_dataset,
-                                                                               l_rate=self.lear_rate, n_epoch=self.num_epoch,
-                                                                               network=self.network1, train_network=NN.train_network()),
-                                                 n_folds=1, l_rate=self.lear_rate, n_epoch=self.num_epoch, network=self.network1,
-                                                 folds=self.folds,rand_range=self.random_wages,momentum=1,bias=0.001)
+
+            #NN.train_network(self)
+            ##############
+            # 3_TRAINING #
+            ##############
+            print(self.n_epoch)
+            for epoch in range(self.n_epoch):
+                for self.row_train in self.train_dataset:
+                    #self.outputs = forward_propagate(self)
+                    ##############
+                    # 4_FORW.PRO #
+                    ##############
+                    self.inputs = self.row_train
+                    for self.layer1 in self.network1:
+                        self.new_inputs1 = []
+                        for self.neuron1 in self.layer1:
+                            self.activate_weights = self.neuron1['weights']
+                            self.activation = NN.activate(self)
+                            self.neuron1['output'] = NN.transfer(self)
+                            self.new_inputs1.append(self.neuron1['output'])
+                        self.inputs1 = self.new_inputs1
+                    self.outputs = self.inputs1
+                    ##############
+                    # 4_FORW.PRO #
+                    ##############
+                    self.expected = [0 for i in range(self.n_outputs)]
+                    self.expected[row[-1]] = 1
+                    #NN.backward_propagate_error(self)
+                    ##############
+                    # 7_BACK_ERR #
+                    ##############
+                    for i in reversed(range(len(self.network1))):
+                        layer = self.network1[i]
+                        errors = list()
+                        if i != len(self.network1) - 1:
+                            for j in range(len(layer)):
+                                error = 0.0
+                                for neuron in self.network1[i + 1]:
+                                    error += (neuron['weights'][j] * neuron['delta'])
+                                errors.append(error)
+                        else:
+                            for j in range(len(layer)):
+                                neuron = layer[j]
+                                errors.append(neuron['output'] - self.expected[j])
+                        for j in range(len(layer)):
+                            neuron = layer[j]
+                            neuron['delta'] = errors[j] * NN.transfer_derivative(neuron['output'])
+                    ##############
+                    # 7_BACK_ERR #
+                    ##############
+                    NN.update_weights(self)
+            for i in range(len(self.network1)):
+                for self.neuron in self.network1[i]:
+                    print("Actual weights:")
+                    print(self.neuron['weights'])
+            ##############
+            # 3_TRAINING #
+            ##############
+
+            self.predictions = list()
+            print(self.test_dataset)
+
+            for row_BP in self.test_dataset:
+                #self.prediction = NN.predict(self.network1, self.row_BP)
+                ##############
+                # 5_PREDICT  #
+                ##############
+                ##############
+                # 4_FORW.PRO #
+                ##############
+                self.inputs = self.row_train
+                for self.layer1 in self.network1:
+                    self.new_inputs1 = []
+                    for self.neuron1 in self.layer1:
+                        self.activate_weights = self.neuron1['weights']
+                        self.activation = NN.activate(self)
+                        self.neuron1['output'] = NN.transfer(self)
+                        self.new_inputs1.append(self.neuron1['output'])
+                    self.inputs1 = self.new_inputs1
+                self.outputs = self.inputs1
+                self.prediction=self.outputs.index(max(self.outputs))
+                ##############
+                # 4_FORW.PRO #
+                ##############
+                ##############
+                # 5_PREDICT  #
+                ##############
+
+                self.predictions.append(self.prediction)
+            return (self.predictions)
+            ##############
+            # 2_BACK PRO #
+            ##############
+            self.actual = [self.row_actual[-1] for self.row_actual in fold]
+            self.accuracy = NN.accuracy_metric(self)
+            self.scores.append(self.accuracy)
+            print(scores)
+            ##############
+            # 1_EVALUATE #
+            ##############
+
+            #self.scores1 = NN.evaluate_algorithm(self)
 
     def __visualization(self):
         # outline="#ffff00", fill="#ffff00")   # żółty
