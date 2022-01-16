@@ -231,6 +231,7 @@ class Gui:
             self.train_var_state = True
             self.Dataset_message()
 
+
         # MAIN LOOP in GUI
         for i in range(len(self.train_dataset[0]) - 1):
             str_column_to_float(self.train_dataset, i)
@@ -254,6 +255,8 @@ class Gui:
             else:
                 self.train_dataset3[i][-1] = 0
 
+        self.check_box_data_panel_train_entry.select()
+
     def read_test_csv(self):
         self.filename = fd.askopenfilename()
         #print(self.filename)
@@ -269,6 +272,8 @@ class Gui:
             self.test_var_state = True
             self.Dataset_message()
 
+        self.check_box_data_panel_test_entry.select()
+
     def __create_data_panel_widgets(self):
         self.data_panel_frame = LabelFrame(self.frame, text='Panel danych', width=500, height=100)
         self.data_panel_frame.place(x=45, y=15)
@@ -281,6 +286,10 @@ class Gui:
         self.data_panel_train_entry = Entry(self.data_panel_frame, justify=LEFT,
                                                textvariable=self.data_panel_train_var, readonlybackground='#FFFFFF')
         self.data_panel_train_entry.place(x=155, y=10, width=290, height=25)
+        self.check_box_data_panel_train_entry = Checkbutton(self.data_panel_frame, state=DISABLED)
+        self.check_box_data_panel_train_entry.deselect()
+        self.check_box_data_panel_train_entry.place(x=445, y=10)
+
 
         # Wczytywanie pliku testowego
         self.data_panel_test_button = Button(self.data_panel_frame, text='Wczytaj plik testowy', bg='#E1E1E1',
@@ -290,6 +299,9 @@ class Gui:
         self.data_panel_test_entry = Entry(self.data_panel_frame, justify=LEFT,
                                                textvariable=self.data_panel_test_var,readonlybackground='#FFFFFF')
         self.data_panel_test_entry.place(x=155, y=45, width=290, height=25)
+        self.check_box_data_panel_test_entry = Checkbutton(self.data_panel_frame, state=DISABLED)
+        self.check_box_data_panel_test_entry.deselect()
+        self.check_box_data_panel_test_entry.place(x=445, y=45)
 
     def __create_standard_parameters_widgets(self):
         self.standard_parameters_frame = LabelFrame(self.frame, text='Parametry standardowe', width=230, height=150)
@@ -342,8 +354,9 @@ class Gui:
         self.action_panel_initialize_button = Button(self.optional_parameters_frame, text='Inicjalizuj sieć', bg='#E1E1E1', command=lambda: self.__initial_network())
         self.action_panel_initialize_button.place(x=15, y=15, width=90, height=40)
         self.action_panel_initialize_var = StringVar()
-        self.radio_button_initialize = Radiobutton(self.optional_parameters_frame, variable=self.action_panel_initialize_var, value=0)
-        self.radio_button_initialize.place(x=115, y=25)
+        self.check_box_initialize = Checkbutton(self.optional_parameters_frame, variable=self.action_panel_initialize_var, state=DISABLED)
+        self.check_box_initialize.deselect()
+        self.check_box_initialize.place(x=115, y=25)
 
         self.action_panel_learn_button = Button(self.optional_parameters_frame, text='Naucz sieć', bg='#E1E1E1', command=lambda: self.__train_network())
         self.action_panel_learn_button.place(x=200, y=15, width=90, height=40)
@@ -356,51 +369,21 @@ class Gui:
         #self.visualization_frame = LabelFrame(self.frame, text='Wizualizacja',width=500, height=850)
         self.visualization_frame.place(x=620, y=15,width=500, height=550)
 
-        c = Canvas(self.visualization_frame)
-        c.pack(fill=BOTH, expand=1)
+        self.c = Canvas(self.visualization_frame)
+        self.c.pack(fill=BOTH, expand=1)
         #outline="#ffff00", fill="#ffff00")   # żółty
         #outline="#ffffff", fill="#ffffff")   # biały
         #outline="#808080", fill="#808080")   # szary
         #outline="#000000", fill="#000000")   # czarny
 
-        # I kwadrat
-        c.create_rectangle(  0,   0,  50,  50, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,   0, 102,  50, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,   0, 154,  50, outline="#000000", fill="#ffffff")
+        coords = [[0, 0],[52, 0],[104, 0],[0, 52],[52, 52],[104, 52],[0, 104],[52, 104],[104, 104]]
+        offset = [0, 180, 360]
+        width = 50
 
-        c.create_rectangle(  0,  52,  50, 102, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,  52, 102, 102, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,  52, 154, 102, outline="#000000", fill="#ffffff")
-
-        c.create_rectangle(  0, 104,  50, 154, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52, 104, 102, 154, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104, 104, 154, 154, outline="#000000", fill="#ffffff")
-
-        # II kwadrat
-        c.create_rectangle(  0,   0+180,  50,  50+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,   0+180, 102,  50+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,   0+180, 154,  50+180, outline="#000000", fill="#ffffff")
-
-        c.create_rectangle(  0,  52+180,  50, 102+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,  52+180, 102, 102+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,  52+180, 154, 102+180, outline="#000000", fill="#ffffff")
-
-        c.create_rectangle(  0, 104+180,  50, 154+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52, 104+180, 102, 154+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104, 104+180, 154, 154+180, outline="#000000", fill="#ffffff")
-
-        # III kwadrat
-        c.create_rectangle(  0,   0+360,  50,  50+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,   0+360, 102,  50+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,   0+360, 154,  50+360, outline="#000000", fill="#ffffff")
-
-        c.create_rectangle(  0,  52+360,  50, 102+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,  52+360, 102, 102+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,  52+360, 154, 102+360, outline="#000000", fill="#ffffff")
-
-        c.create_rectangle(  0, 104+360,  50, 154+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52, 104+360, 102, 154+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104, 104+360, 154, 154+360, outline="#000000", fill="#ffffff")
+        #kwadraty
+        for of in offset:
+            for co in coords:
+                self.c.create_rectangle(co[0], co[1]+of, co[0]+width, co[1]+width+of, outline="#000000", fill="#ffffff")
 
         ## WYNIKI LICZBOWE
 
@@ -574,7 +557,7 @@ class Gui:
         self.visualization_N3Active_label = Label(self.visualization_frame, text='Aktywacja 3 neuronu')
         self.visualization_N3Active_label.place(x=20 + 356, y=78+360+50, height=25)
 
-        c.pack(fill=BOTH, expand=1)
+        self.c.pack(fill=BOTH, expand=1)
 
     def __create_visualization_options_widgets(self):
         self.visualization_options_frame = LabelFrame(self.frame, text='Opcje wyświetlania', width=500, height=70)
@@ -588,16 +571,16 @@ class Gui:
         self.number_of_actualization_entry.place(x=250, y=15, width=70, height=25)
 
     def __initial_network(self):
-        self.random_wages=self.number_of_random_wages_var.get()
-        self.num_epoch=self.number_of_epochs_var.get()
-        self.lear_rate=self.learning_rate_var.get()
+        self.random_wages = float(self.number_of_random_wages_var.get())
+        self.num_epoch = float(self.number_of_epochs_var.get())
+        self.lear_rate = float(self.learning_rate_var.get())
 
         if self.train_dataset == None or self.train_dataset2 == None or self.train_dataset3 == None:
-            return messagebox.showinfo('Message', f'Network CANNOT be Initialized. Read the train file first.')
+            return messagebox.showerror('Message', f'Network CANNOT be Initialized. Read the train file first.')
         else:
-            self.network1, self.output_wages1 = NN.initialize_network(self,self.train_dataset,self.test_dataset)
-            self.network2, self.output_wages2 = NN.initialize_network(self,self.train_dataset2,self.test_dataset)
-            self.network3, self.output_wages3 = NN.initialize_network(self,self.train_dataset3,self.test_dataset)
+            self.network1, self.output_wages1 = NN.initialize_network(self,self.train_dataset,self.test_dataset, rand_range=self.random_wages)
+            self.network2, self.output_wages2 = NN.initialize_network(self,self.train_dataset2,self.test_dataset, rand_range=self.random_wages)
+            self.network3, self.output_wages3 = NN.initialize_network(self,self.train_dataset3,self.test_dataset, rand_range=self.random_wages)
 
             self.visualization_q11.insert(0,f'{round(self.output_wages1[0],3)}')
             self.visualization_q12.insert(0,f'{round(self.output_wages1[1],3)}')
@@ -629,23 +612,31 @@ class Gui:
             self.visualization_q38.insert(0,f'{round(self.output_wages3[7],3)}')
             self.visualization_q39.insert(0,f'{round(self.output_wages3[8],3)}')
 
-            print(self.hidden_layer)
-            print(self.n_inputs)
-            print(self.output_layer)
-            print(self.n_outputs)
+            #print(self.hidden_layer)
+            #print(self.n_inputs)
+            #print(self.output_layer)
+            #print(self.n_outputs)
 
-
+            self.check_box_initialize.select()
             return messagebox.showinfo('Message', f'Network has been INITIALIZED.')
 
     def __train_network(self):
-        #self.__visualization()
+        self.__visualization()
         if self.network is None:
-            messagebox.showerror('Sieć nie istnieje', 'Przed rozpoczęciem trenowania sieci należy ją utworzyć')
-            return
+            return messagebox.showerror('Sieć nie istnieje', 'Przed rozpoczęciem trenowania sieci należy ją utworzyć')
+        else:
+
+            self.folds = NN.cross_validation_split(self,dataset=self.train_dataset, n_folds=1)
+            print(self.folds)
+
+            self.scores1 = NN.evaluate_algorithm(self, dataset=self.train_dataset,
+                                                 algorithm=NN.back_propagation(self,train=self.train_dataset, test=self.test_dataset,
+                                                                               l_rate=self.lear_rate, n_epoch=self.num_epoch,
+                                                                               network=self.network1, train_network=NN.train_network()),
+                                                 n_folds=1, l_rate=self.lear_rate, n_epoch=self.num_epoch, network=self.network1,
+                                                 folds=self.folds,rand_range=self.random_wages,momentum=1,bias=0.001)
 
     def __visualization(self):
-        c = Canvas(self.visualization_frame)
-        c.pack(fill=BOTH, expand=1)
         # outline="#ffff00", fill="#ffff00")   # żółty
         # outline="#ffffff", fill="#ffffff")   # biały
         # outline="#808080", fill="#808080")   # szary
@@ -655,129 +646,20 @@ class Gui:
         BLACK = "#000000"
 
 
-        weight=[0.2,1.2,-0.3,-1.2,1,0.9,-0.4,0,-0.9]
+        weight = [0.2,1.2,-0.3,-1.2,1,0.9,-0.4,0,-0.9]
+        coords = [[0, 0],[52, 0],[104, 0],[0, 52],[52, 52],[104, 52],[0, 104],[52, 104],[104, 104]]
+        width = 50
 
-        # KWADRAT 1.1
-        if weight[0] > 1:
-            COLOR = GOLD
-        elif weight[0] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
+        #kwadraty
+        for i in range(9):
+            self.c.create_rectangle(coords[i][0], coords[i][1], coords[i][0]+width, coords[i][1]+width, outline="#000000", fill=BLACK)
 
-        c.create_rectangle(0, 0, 50, 50, outline="#000000", fill=COLOR)
+            if weight[i] > 0:
+                COLOR = GOLD
+            else:
+                COLOR=GREY
 
-        # KWADRAT 1.2
-        if weight[1] > 1:
-            COLOR = GOLD
-        elif weight[1] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-
-        c.create_rectangle(52, 0, 102, 50, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.3
-        if weight[2] > 1:
-            COLOR = GOLD
-        elif weight[2] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-
-        c.create_rectangle(104, 0, 154, 50, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.4
-        if weight[3] > 1:
-            COLOR = GOLD
-        elif weight[3] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(0, 52, 50, 102, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.5
-        if weight[4] > 1:
-            COLOR = GOLD
-        elif weight[4] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(52, 52, 102, 102, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.6
-        if weight[5] > 1:
-            COLOR = GOLD
-        elif weight[5] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(104, 52, 154, 102, outline="#000000", fill=COLOR)
-
-
-        # KWADRAT 1.7
-        if weight[6] > 1:
-            COLOR = GOLD
-        elif weight[6] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(0, 104, 50, 154, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.8
-        if weight[7] > 1:
-            COLOR = GOLD
-        elif weight[7] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(52, 104, 102, 154, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.9
-        if weight[8] > 1:
-            COLOR = GOLD
-        elif weight[8] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(104, 104, 154, 154, outline="#000000", fill=COLOR)
-
-        """
-        # I kwadrat
-        c.create_rectangle(0, 0, 50, 50, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 0, 102, 50, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 0, 154, 50, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 52, 50, 102, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 52, 102, 102, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 52, 154, 102, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 104, 50, 154, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 104, 102, 154, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 104, 154, 154, outline="#000000", fill=COLOR)
-        """
-        # II kwadrat
-        c.create_rectangle(0, 0 + 180, 50, 50 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 0 + 180, 102, 50 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 0 + 180, 154, 50 + 180, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 52 + 180, 50, 102 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 52 + 180, 102, 102 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 52 + 180, 154, 102 + 180, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 104 + 180, 50, 154 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 104 + 180, 102, 154 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 104 + 180, 154, 154 + 180, outline="#000000", fill=COLOR)
-
-        # III kwadrat
-        c.create_rectangle(0, 0 + 360, 50, 50 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 0 + 360, 102, 50 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 0 + 360, 154, 50 + 360, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 52 + 360, 50, 102 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 52 + 360, 102, 102 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 52 + 360, 154, 102 + 360, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 104 + 360, 50, 154 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 104 + 360, 102, 154 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 104 + 360, 154, 154 + 360, outline="#000000", fill=COLOR)
+            if -1 <= weight[i] <= 1:
+                self.c.create_rectangle(coords[i][0], coords[i][1], coords[i][0]+abs(weight[i])*50, coords[i][1]+abs(weight[i])*50, outline="#000000", fill=COLOR)
+            else:
+                self.c.create_rectangle(coords[i][0], coords[i][1], coords[i][0]+width, coords[i][1]+width, outline="#000000", fill=COLOR)
