@@ -861,9 +861,9 @@ class Gui:
                 self.c.create_rectangle(co[0], co[1]+of, co[0]+width, co[1]+width+of, outline="#000000", fill=BLACK)
 
                 if self.weights[i] > 0:
-                    COLOR = GOLD
+                    COLOR = GREY
                 else:
-                    COLOR=GREY
+                    COLOR = GOLD
 
                 if -1 <= self.weights[i] <= 1:
                     self.c.create_rectangle(co[0], co[1]+of, co[0]+abs(self.weights[i])*width, co[1]+abs(self.weights[i])*width+of, outline="#000000", fill=COLOR)
