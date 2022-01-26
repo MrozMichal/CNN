@@ -12,6 +12,9 @@ from csv import reader
 from math import exp
 import copy
 
+global Icons_counter
+Icons_counter=0
+
 class TrainingWindow:
     def __init__(self, epochs, training_history):
         self.frame = Tk()
@@ -30,6 +33,7 @@ class TrainingWindow:
         self.__create_widgets()
 
         self.frame.mainloop()
+
 
     def __create_widgets(self):
         self.training_label = Label(self.frame, text='Metoda uczenie:     Spadek wzdłuż gradientu z momentem')
@@ -86,6 +90,7 @@ class Gui:
         self.train_dataset2 = None
         self.train_dataset3 = None
         self.test_dataset = None
+        self.weights = []
 
         # Ustawianie stanu wczytania pliku uczacego i testowego
         self.train_var_state = False
@@ -96,6 +101,94 @@ class Gui:
         self.training_window = None
         self.frame.mainloop()
 
+    def Ikona(self):
+        global Icons_counter
+        Icons_counter += 1
+        # self.number_of_random_wages_label = Label(self.standard_parameters_frame, text='Zakres losowania wag:')
+        # self.number_of_random_wages_label.place(x=5, y=15, height=25)
+        # self.number_of_random_wages_var = StringVar()
+        # self.acctual_icon='1'
+        # self.number_of_random_wages_entry = Entry(self.standard_parameters_frame, justify=CENTER,
+        #                                           textvariable=self.acctual_icon)
+        # self.number_of_random_wages_entry.insert(0, '0.1')
+        # self.number_of_random_wages_entry.place(x=145, y=15, width=50, height=25)
+        if self.train_dataset is None: # TO jest inicjalizowane w NN
+            return messagebox.showerror('Nie podano pliku', 'Wczytaj plik uczacy')
+        Icons = ['1', '2', '3']
+        if (Icons_counter == 3):
+            Icons_counter = 0
+        self.Ikona_output_var = StringVar(value=Icons[Icons_counter])
+        self.Ikona_output_entry = Entry(self.frame, justify=CENTER, textvariable=self.Ikona_output_var,
+                                        readonlybackground='#FFFFFF')
+        self.Ikona_output_entry.place(x=300, y=600, width=75, height=30)
+
+        # ICONS
+        self.ikona1 = int(self.train_dataset[Icons_counter][0])
+        self.ikona2 = int(self.train_dataset[Icons_counter][1])
+        self.ikona3 = int(self.train_dataset[Icons_counter][2])
+        self.ikona4 = int(self.train_dataset[Icons_counter][3])
+        self.ikona5 = int(self.train_dataset[Icons_counter][4])
+        self.ikona6 = int(self.train_dataset[Icons_counter][5])
+        self.ikona7 = int(self.train_dataset[Icons_counter][6])
+        self.ikona8 = int(self.train_dataset[Icons_counter][7])
+        self.ikona9 = int(self.train_dataset[Icons_counter][8])
+
+        self.ikonaAnswer1 = StringVar()
+        self.ikonaAnswer2 = StringVar()
+        self.ikonaAnswer3 = StringVar()
+
+        self.ikona1 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona1),
+                            readonlybackground='#FFFFFF')
+        self.ikona2 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona2),
+                            readonlybackground='#FFFFFF')
+        self.ikona3 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona3),
+                            readonlybackground='#FFFFFF')
+        self.ikona4 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona4),
+                            readonlybackground='#FFFFFF')
+        self.ikona5 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona5),
+                            readonlybackground='#FFFFFF')
+        self.ikona6 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona6),
+                            readonlybackground='#FFFFFF')
+        self.ikona7 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona7),
+                            readonlybackground='#FFFFFF')
+        self.ikona8 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona8),
+                            readonlybackground='#FFFFFF')
+        self.ikona9 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona9),
+                            readonlybackground='#FFFFFF')
+
+        self.ikonaAnswer1 = Entry(self.frame, justify=CENTER,
+                                  textvariable=self.ikonaAnswer1,
+                                  state='readonly', readonlybackground='#FFFFFF')
+        self.ikonaAnswer2 = Entry(self.frame, justify=CENTER,
+                                  textvariable=self.ikonaAnswer2,
+                                  state='readonly', readonlybackground='#FFFFFF')
+        self.ikonaAnswer3 = Entry(self.frame, justify=CENTER,
+                                  textvariable=self.ikonaAnswer3,
+                                  state='readonly', readonlybackground='#FFFFFF')
+
+        self.ikona1.place(x=120, y=425, width=40, height=40)
+        self.ikona2.place(x=190, y=425, width=40, height=40)
+        self.ikona3.place(x=260, y=425, width=40, height=40)
+        self.ikona4.place(x=120, y=475, width=40, height=40)
+        self.ikona5.place(x=190, y=475, width=40, height=40)
+        self.ikona6.place(x=260, y=475, width=40, height=40)
+        self.ikona7.place(x=120, y=525, width=40, height=40)
+        self.ikona8.place(x=190, y=525, width=40, height=40)
+        self.ikona9.place(x=260, y=525, width=40, height=40)
+
+        self.ikonaAnswer1.place(x=470, y=425, width=40, height=40)
+        self.ikonaAnswer2.place(x=470, y=475, width=40, height=40)
+        self.ikonaAnswer3.place(x=470, y=525, width=40, height=40)
+
     def __create_widgets(self):
         self.__create_data_panel_widgets()
         self.__create_standard_parameters_widgets()
@@ -105,7 +198,7 @@ class Gui:
         self.__create_visualization_options_widgets()
 
         self.response_surface_button = Button(self.frame, text='Ikona', bg='#E1E1E1',
-                                              command=lambda: self.__plot_response_surface())
+                                              command=lambda: self.Ikona())
         self.response_surface_button.place(x=180, y=600, width=100, height=30)
 
         #self.Ikona_output_label = Label(self.frame, text='Wejścia')
@@ -624,7 +717,6 @@ class Gui:
         self.num_epoch = int(self.number_of_epochs_var.get())
         self.lear_rate = float(self.learning_rate_var.get())
 
-        self.__visualization()
         if self.network1 is None: # TO jest inicjalizowane w NN
             return messagebox.showerror('Sieć nie istnieje', 'Przed rozpoczęciem trenowania sieci należy ją utworzyć')
         else:
@@ -661,7 +753,10 @@ class Gui:
             self.visualization_q19.delete(0, "end")
             self.visualization_q19.insert(0, f'{round(self.output_wages1[8], 3)}')
 
+            for i in range(0, len(self.output_wages1)-1):
+                self.weights.append(self.output_wages1[i])
 
+            print(self.output_wages1)
 
             scores2 = NB.evaluate_algorithm(self, self.train_dataset2, NB.back_propagation, n_folds, l_rate, n_epoch,n_hidden, rand_range=0.1, momentum=0, bias=0)
 
@@ -687,6 +782,9 @@ class Gui:
             self.visualization_q29.delete(0, "end")
             self.visualization_q29.insert(0, f'{round(self.output_wages1[8], 3)}')
 
+            for i in range(0, len(self.output_wages1)-1):
+                self.weights.append(self.output_wages1[i])
+
             scores3 = NB.evaluate_algorithm(self, self.train_dataset3, NB.back_propagation, n_folds, l_rate, n_epoch, n_hidden, rand_range=0.1, momentum=0, bias=0)
             self.visualization_q31.delete(0, "end")
             self.visualization_q31.insert(0, f'{round(self.output_wages1[0], 3)}')
@@ -706,6 +804,12 @@ class Gui:
             self.visualization_q38.insert(0, f'{round(self.output_wages1[7], 3)}')
             self.visualization_q39.delete(0, "end")
             self.visualization_q39.insert(0, f'{round(self.output_wages1[8], 3)}')
+
+            for i in range(0, len(self.output_wages1)-1):
+                self.weights.append(self.output_wages1[i])
+
+            self.__visualization()
+
             # ##############
             # # 1_EVALUATE #
             # ##############
@@ -834,29 +938,28 @@ class Gui:
             # #self.scores1 = NN.evaluate_algorithm(self)
 
     def __visualization(self):
-        # outline="#ffff00", fill="#ffff00")   # żółty
-        # outline="#ffffff", fill="#ffffff")   # biały
-        # outline="#808080", fill="#808080")   # szary
-        # outline="#000000", fill="#000000")   # czarny
         GOLD = "#ffff00"
         GREY = "#808080"
         BLACK = "#000000"
 
-
-        weight = [0.2,1.2,-0.3,-1.2,1,0.9,-0.4,0,-0.9]
         coords = [[0, 0],[52, 0],[104, 0],[0, 52],[52, 52],[104, 52],[0, 104],[52, 104],[104, 104]]
+        offset = [0, 180, 360]
         width = 50
+        i = 0
 
         #kwadraty
-        for i in range(9):
-            self.c.create_rectangle(coords[i][0], coords[i][1], coords[i][0]+width, coords[i][1]+width, outline="#000000", fill=BLACK)
+        for of in offset:
+            for co in coords:
+                self.c.create_rectangle(co[0], co[1]+of, co[0]+width, co[1]+width+of, outline="#000000", fill=BLACK)
 
-            if weight[i] > 0:
-                COLOR = GOLD
-            else:
-                COLOR=GREY
+                if self.weights[i] > 0:
+                    COLOR = GREY
+                else:
+                    COLOR = GOLD
 
-            if -1 <= weight[i] <= 1:
-                self.c.create_rectangle(coords[i][0], coords[i][1], coords[i][0]+abs(weight[i])*50, coords[i][1]+abs(weight[i])*50, outline="#000000", fill=COLOR)
-            else:
-                self.c.create_rectangle(coords[i][0], coords[i][1], coords[i][0]+width, coords[i][1]+width, outline="#000000", fill=COLOR)
+                if -1 <= self.weights[i] <= 1:
+                    self.c.create_rectangle(co[0], co[1]+of, co[0]+abs(self.weights[i])*width, co[1]+abs(self.weights[i])*width+of, outline="#000000", fill=COLOR)
+                else:
+                    self.c.create_rectangle(co[0], co[1]+of, co[0]+width, co[1]+width+of, outline="#000000", fill=COLOR)
+
+                i += 1
