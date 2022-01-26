@@ -48,9 +48,12 @@ def str_column_to_int(dataset, column):
 
 # Split a dataset into k folds
 def cross_validation_split(dataset, n_folds):
+
     dataset_split = list()
     dataset_copy = list(dataset)
     fold_size = int(len(dataset) / n_folds)
+    #print(dataset_copy)
+    #print(fold_size)
 
     for i in range(n_folds):
         fold = list()
@@ -58,6 +61,7 @@ def cross_validation_split(dataset, n_folds):
             index = randrange(len(dataset_copy))
             fold.append(dataset_copy.pop(index))
         dataset_split.append(fold)
+   # print(dataset_split)
     return dataset_split
 
 
@@ -71,7 +75,7 @@ def accuracy_metric(actual, predicted):
 
 
 # Evaluate an algorithm using a cross validation split
-def evaluate_algorithm(dataset, algorithm, n_folds, *args,rand_range,momentum,bias):
+def evaluate_algorithm(self,dataset, algorithm, n_folds, *args,rand_range,momentum,bias):
     folds = cross_validation_split(dataset, n_folds)
     scores = list()
     for fold in folds:
@@ -85,7 +89,7 @@ def evaluate_algorithm(dataset, algorithm, n_folds, *args,rand_range,momentum,bi
             row_copy = list(row)
             test_set.append(row_copy)
             row_copy[-1] = None
-        predicted = algorithm(train_set, test_set, *args,rand_range,momentum,bias)
+        predicted = algorithm(self,train_set, test_set, *args,rand_range,momentum,bias)
         actual = [row[-1] for row in fold]
         accuracy = accuracy_metric(actual, predicted)
         scores.append(accuracy)
@@ -115,6 +119,8 @@ def forward_propagate(network, row):
             neuron['output'] = transfer(activation)
             new_inputs.append(neuron['output'])
         inputs = new_inputs
+    # print('self.outputs:') #OK, sprawdzono podobne, jak w mainie
+    # print(inputs)
     return inputs
 
 
@@ -132,15 +138,19 @@ def backward_propagate_error(network, expected):
             for j in range(len(layer)):
                 error = 0.0
                 for neuron in network[i + 1]:
+                    #print(neuron['delta'])
                     error += (neuron['weights'][j] * neuron['delta'])
+                    #print(error) Do poweszenia
                 errors.append(error)
         else:
             for j in range(len(layer)):
                 neuron = layer[j]
                 errors.append(neuron['output'] - expected[j])
+            #print(errors)
         for j in range(len(layer)):
             neuron = layer[j]
             neuron['delta'] = errors[j] * transfer_derivative(neuron['output'])
+            #print(neuron['delta'])
 
 
 # Update network weights with error
@@ -154,13 +164,14 @@ def update_weights(network, row, l_rate,momentum,bias):
             for j in range(len(inputs)):
                 #neuron['weights'][j] -= l_rate * neuron['delta'] * inputs[j]
                 buffor=neuron['weights'][j]
+                #print(buffor)
                 neuron['weights'][j] -= (l_rate * neuron['delta'] * inputs[j]+momentum*(neuron['weights'][j]-neuron['prev_weights'][j]))+bias
                 neuron['prev_weights'][j] = buffor
             neuron['weights'][-1] -= l_rate * neuron['delta']
 
 
 # Train a network for a fixed number of epochs
-def train_network(network, train, l_rate, n_epoch, n_outputs,momentum):
+def train_network(self,network, train, l_rate, n_epoch, n_outputs,momentum,bias):
     for epoch in range(n_epoch):
         for row in train:
             outputs = forward_propagate(network, row)
@@ -168,17 +179,20 @@ def train_network(network, train, l_rate, n_epoch, n_outputs,momentum):
             expected[row[-1]] = 1
             backward_propagate_error(network, expected)
             update_weights(network, row, l_rate,momentum,bias)
-    for i in range(len(network)):
-        for neuron in network[i]:
-                print(neuron['weights'])
+    #for i in range(len(network)):
+    for neuron in network[0]:
+            self.output_wages1=neuron['weights']
+            print(neuron['weights'])
 
 
 # Initialize a network
 def initialize_network(n_inputs, n_hidden, n_outputs,rand_range):
     network = list()
-    hidden_layer = [{'weights': [random.uniform(-rand_range,rand_range) for i in range(n_inputs + 1)],'prev_weights': [0 for i in range(n_inputs + 1)]} for i in range(n_hidden)]
+    hidden_layer = [{'weights': [random.uniform(-rand_range,rand_range) for i in range(n_inputs + 1)],
+                     'prev_weights': [0 for i in range(n_inputs + 1)]} for i in range(n_hidden)]
     network.append(hidden_layer)
-    output_layer = [{'weights': [random.uniform(-rand_range,rand_range) for i in range(n_hidden + 1)],'prev_weights': [0 for i in range(n_hidden + 1)]} for i in range(n_outputs)]
+    output_layer = [{'weights': [random.uniform(-rand_range,rand_range) for i in range(n_hidden + 1)],
+                     'prev_weights': [0 for i in range(n_hidden + 1)]} for i in range(n_outputs)]
     network.append(output_layer)
     return network
 
@@ -190,11 +204,11 @@ def predict(network, row):
 
 
 # Backpropagation Algorithm With Stochastic Gradient Descent
-def back_propagation(train, test, l_rate, n_epoch, n_hidden,rand_range,momentum,bias):
+def back_propagation(self,train, test, l_rate, n_epoch, n_hidden,rand_range,momentum,bias):
     n_inputs = len(train[0]) - 1
     n_outputs = len(set([row[-1] for row in train]))
     network = initialize_network(n_inputs, n_hidden, n_outputs,rand_range)
-    train_network(network, train, l_rate, n_epoch, n_outputs,momentum)
+    train_network(self,network, train, l_rate, n_epoch, n_outputs,momentum,bias)
     predictions = list()
     #Zmienione
     # predictions.append(predict(network, [1,1,1,0,1,0,0,1,0,0]))
@@ -224,54 +238,54 @@ seed(1)
 #   Nalezy zaladowac plik .csv z danymi dla pierwszej sieci neuronowej - pozostale utworza sie same.
 #   Forma pliku wyglada nastepujaco - splaszczona lista, z jedynkami, tam gdzie ma byc True dla ikonki i na końcu stwierdzenie przynaleznosci do klasy, lub jej brak
 
-filename = 'BP.csv'
-
-dataset = load_csv(filename)
-
-for i in range(len(dataset[0]) - 1):
-    str_column_to_float(dataset, i)
-
-# convert class column to integers
-str_column_to_int(dataset, len(dataset[0]) - 1)
-
-# making dataset 2
-dataset2=copy.deepcopy(dataset)
-for i in range(len(dataset2)):
-    if i==1:
-        dataset2[i][-1]=1
-    else:
-        dataset2[i][-1]=0
-
-
-# making dataset 3
-dataset3=copy.deepcopy(dataset)
-for i in range(len(dataset3)):
-    if i==2:
-        dataset3[i][-1]=1
-    else:
-        dataset3[i][-1]=0
-
-# evaluate algorithm
-n_folds = 1
-l_rate = 0.9
-n_epoch = 10000
-n_hidden = 1
-momentum=0.1
-bias=0.00001
-
-
-scores = evaluate_algorithm(dataset, back_propagation, n_folds, l_rate, n_epoch, n_hidden,rand_range=0.1,momentum=0.1,bias=0)
-scores2 = evaluate_algorithm(dataset2, back_propagation, n_folds, l_rate, n_epoch, n_hidden,rand_range=0.1,momentum=0.1,bias=0)
-scores3 = evaluate_algorithm(dataset3, back_propagation, n_folds, l_rate, n_epoch, n_hidden,rand_range=0.1,momentum=0.1,bias=0)
-
-
-print('Scores: %s' % scores)
-print('Mean Accuracy: %.3f%%' % (sum(scores) / float(len(scores))))
-
-print('Scores: %s' % scores2)
-print('Mean Accuracy: %.3f%%' % (sum(scores2) / float(len(scores2))))
-
-print('Scores: %s' % scores3)
-print('Mean Accuracy: %.3f%%' % (sum(scores3) / float(len(scores3))))
+# filename = 'BP.csv'
+#
+# dataset = load_csv(filename)
+#
+# for i in range(len(dataset[0]) - 1):
+#     str_column_to_float(dataset, i)
+#
+# # convert class column to integers
+# str_column_to_int(dataset, len(dataset[0]) - 1)
+#
+# # making dataset 2
+# dataset2=copy.deepcopy(dataset)
+# for i in range(len(dataset2)):
+#     if i==1:
+#         dataset2[i][-1]=1
+#     else:
+#         dataset2[i][-1]=0
+#
+#
+# # making dataset 3
+# dataset3=copy.deepcopy(dataset)
+# for i in range(len(dataset3)):
+#     if i==2:
+#         dataset3[i][-1]=1
+#     else:
+#         dataset3[i][-1]=0
+#
+# # evaluate algorithm
+# n_folds = 1
+# l_rate = 0.9
+# n_epoch = 10000
+# n_hidden = 1
+# momentum=0
+# bias=0
+#
+#
+# scores = evaluate_algorithm(dataset, back_propagation, n_folds, l_rate, n_epoch, n_hidden,rand_range=0.1,momentum=0,bias=0)
+# #scores2 = evaluate_algorithm(dataset2, back_propagation, n_folds, l_rate, n_epoch, n_hidden,rand_range=0.1,momentum=0.1,bias=0)
+# #scores3 = evaluate_algorithm(dataset3, back_propagation, n_folds, l_rate, n_epoch, n_hidden,rand_range=0.1,momentum=0.1,bias=0)
+#
+#
+# print('Scores: %s' % scores)
+# print('Mean Accuracy: %.3f%%' % (sum(scores) / float(len(scores))))
+#
+# # print('Scores: %s' % scores2)
+# # print('Mean Accuracy: %.3f%%' % (sum(scores2) / float(len(scores2))))
+#
+# # print('Scores: %s' % scores3)
+# # print('Mean Accuracy: %.3f%%' % (sum(scores3) / float(len(scores3))))
 
 

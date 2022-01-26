@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog as fd
 from NeuralNetwork import NeuralNetwork as NN
-#from NewBP import NewBP
+import NewBP as NB
 from matplotlib import pyplot as plt
 import numpy as np
 from random import seed
@@ -11,9 +11,6 @@ from random import random
 from csv import reader
 from math import exp
 import copy
-
-global Icons_counter
-Icons_counter=0
 
 class TrainingWindow:
     def __init__(self, epochs, training_history):
@@ -99,100 +96,6 @@ class Gui:
         self.training_window = None
         self.frame.mainloop()
 
-
-    def Ikona(self):
-        global Icons_counter
-        Icons_counter+=1
-        # self.number_of_random_wages_label = Label(self.standard_parameters_frame, text='Zakres losowania wag:')
-        # self.number_of_random_wages_label.place(x=5, y=15, height=25)
-        # self.number_of_random_wages_var = StringVar()
-        #self.acctual_icon='1'
-        # self.number_of_random_wages_entry = Entry(self.standard_parameters_frame, justify=CENTER,
-        #                                           textvariable=self.acctual_icon)
-        # self.number_of_random_wages_entry.insert(0, '0.1')
-        # self.number_of_random_wages_entry.place(x=145, y=15, width=50, height=25)
-        Icons=['1','2','3']
-        if (Icons_counter==3):
-            Icons_counter=0
-        self.Ikona_output_var=StringVar(value=Icons[Icons_counter])
-        self.Ikona_output_entry = Entry(self.frame, justify=CENTER,textvariable=self.Ikona_output_var, readonlybackground='#FFFFFF')
-        self.Ikona_output_entry.place(x=300, y=600, width=75, height=30)
-
-        # ICONS
-        self.ikona1 = self.train_dataset
-        self.ikona2 = self.train_dataset
-        self.ikona3 = self.train_dataset
-        self.ikona4 = self.train_dataset
-        self.ikona5 = self.train_dataset
-        self.ikona6 = self.train_dataset
-        self.ikona7 = self.train_dataset
-        self.ikona8 = self.train_dataset
-        self.ikona9 = self.train_dataset
-
-        self.ikonaAnswer1 = StringVar()
-        self.ikonaAnswer2 = StringVar()
-        self.ikonaAnswer3 = StringVar()
-
-        self.ikona1 = Entry(self.frame, justify=CENTER,
-                            textvariable=self.ikona1,
-                            readonlybackground='#FFFFFF')
-        self.ikona2 = Entry(self.frame, justify=CENTER,
-                            textvariable=self.ikona2,
-                            readonlybackground='#FFFFFF')
-        self.ikona3 = Entry(self.frame, justify=CENTER,
-                            textvariable=self.ikona3,
-                            readonlybackground='#FFFFFF')
-        self.ikona4 = Entry(self.frame, justify=CENTER,
-                            textvariable=self.ikona4,
-                            readonlybackground='#FFFFFF')
-        self.ikona5 = Entry(self.frame, justify=CENTER,
-                            textvariable=self.ikona5,
-                            readonlybackground='#FFFFFF')
-        self.ikona6 = Entry(self.frame, justify=CENTER,
-                            textvariable=self.ikona6,
-                            readonlybackground='#FFFFFF')
-        self.ikona7 = Entry(self.frame, justify=CENTER,
-                            textvariable=self.ikona7,
-                            readonlybackground='#FFFFFF')
-        self.ikona8 = Entry(self.frame, justify=CENTER,
-                            textvariable=self.ikona8,
-                            readonlybackground='#FFFFFF')
-        self.ikona9 = Entry(self.frame, justify=CENTER,
-                            textvariable=self.ikona9,
-                            readonlybackground='#FFFFFF')
-
-        self.ikonaAnswer1 = Entry(self.frame, justify=CENTER,
-                                  textvariable=self.ikonaAnswer1,
-                                  state='readonly', readonlybackground='#FFFFFF')
-        self.ikonaAnswer2 = Entry(self.frame, justify=CENTER,
-                                  textvariable=self.ikonaAnswer2,
-                                  state='readonly', readonlybackground='#FFFFFF')
-        self.ikonaAnswer3 = Entry(self.frame, justify=CENTER,
-                                  textvariable=self.ikonaAnswer3,
-                                  state='readonly', readonlybackground='#FFFFFF')
-
-        self.ikona1.place(x=120, y=425, width=40, height=40)
-        self.ikona2.place(x=190, y=425, width=40, height=40)
-        self.ikona3.place(x=260, y=425, width=40, height=40)
-        self.ikona4.place(x=120, y=475, width=40, height=40)
-        self.ikona5.place(x=190, y=475, width=40, height=40)
-        self.ikona6.place(x=260, y=475, width=40, height=40)
-        self.ikona7.place(x=120, y=525, width=40, height=40)
-        self.ikona8.place(x=190, y=525, width=40, height=40)
-        self.ikona9.place(x=260, y=525, width=40, height=40)
-
-        self.ikonaAnswer1.place(x=470, y=425, width=40, height=40)
-        self.ikonaAnswer2.place(x=470, y=475, width=40, height=40)
-        self.ikonaAnswer3.place(x=470, y=525, width=40, height=40)
-
-
-
-
-
-
-
-
-
     def __create_widgets(self):
         self.__create_data_panel_widgets()
         self.__create_standard_parameters_widgets()
@@ -202,24 +105,18 @@ class Gui:
         self.__create_visualization_options_widgets()
 
         self.response_surface_button = Button(self.frame, text='Ikona', bg='#E1E1E1',
-                                              command=lambda: self.Ikona())
+                                              command=lambda: self.__plot_response_surface())
         self.response_surface_button.place(x=180, y=600, width=100, height=30)
 
         #self.Ikona_output_label = Label(self.frame, text='Wejścia')
         #self.Ikona_output_label.place(x=320, y=600, width=100, height=25)
 
-        # self.Ikona_output_var = StringVar()
-        # self.Ikona_output_entry = Entry(self.frame, justify=CENTER,
-        #                                        textvariable=self.Ikona_output_var,
-        #                                        state='readonly', readonlybackground='#FFFFFF')
-        # self.Ikona_output_entry.insert(0, '0')
-        # self.Ikona_output_entry.place(x=300, y=600, width=75, height=30)
-
         self.Ikona_output_var = StringVar()
         self.Ikona_output_entry = Entry(self.frame, justify=CENTER,
-                                               textvariable=self.Ikona_output_var, readonlybackground='#FFFFFF')
-        self.Ikona_output_entry.insert(0, '0')
+                                               textvariable=self.Ikona_output_var,
+                                               state='readonly', readonlybackground='#FFFFFF')
         self.Ikona_output_entry.place(x=300, y=600, width=75, height=30)
+        self.Ikona_output_entry.insert(0, '0')
 
 
         # ICONS
@@ -334,6 +231,7 @@ class Gui:
             self.train_var_state = True
             self.Dataset_message()
 
+
         # MAIN LOOP in GUI
         for i in range(len(self.train_dataset[0]) - 1):
             str_column_to_float(self.train_dataset, i)
@@ -357,6 +255,8 @@ class Gui:
             else:
                 self.train_dataset3[i][-1] = 0
 
+        self.check_box_data_panel_train_entry.select()
+
     def read_test_csv(self):
         self.filename = fd.askopenfilename()
         #print(self.filename)
@@ -372,6 +272,8 @@ class Gui:
             self.test_var_state = True
             self.Dataset_message()
 
+        self.check_box_data_panel_test_entry.select()
+
     def __create_data_panel_widgets(self):
         self.data_panel_frame = LabelFrame(self.frame, text='Panel danych', width=500, height=100)
         self.data_panel_frame.place(x=45, y=15)
@@ -384,6 +286,10 @@ class Gui:
         self.data_panel_train_entry = Entry(self.data_panel_frame, justify=LEFT,
                                                textvariable=self.data_panel_train_var, readonlybackground='#FFFFFF')
         self.data_panel_train_entry.place(x=155, y=10, width=290, height=25)
+        self.check_box_data_panel_train_entry = Checkbutton(self.data_panel_frame, state=DISABLED)
+        self.check_box_data_panel_train_entry.deselect()
+        self.check_box_data_panel_train_entry.place(x=445, y=10)
+
 
         # Wczytywanie pliku testowego
         self.data_panel_test_button = Button(self.data_panel_frame, text='Wczytaj plik testowy', bg='#E1E1E1',
@@ -393,6 +299,9 @@ class Gui:
         self.data_panel_test_entry = Entry(self.data_panel_frame, justify=LEFT,
                                                textvariable=self.data_panel_test_var,readonlybackground='#FFFFFF')
         self.data_panel_test_entry.place(x=155, y=45, width=290, height=25)
+        self.check_box_data_panel_test_entry = Checkbutton(self.data_panel_frame, state=DISABLED)
+        self.check_box_data_panel_test_entry.deselect()
+        self.check_box_data_panel_test_entry.place(x=445, y=45)
 
     def __create_standard_parameters_widgets(self):
         self.standard_parameters_frame = LabelFrame(self.frame, text='Parametry standardowe', width=230, height=150)
@@ -445,8 +354,9 @@ class Gui:
         self.action_panel_initialize_button = Button(self.optional_parameters_frame, text='Inicjalizuj sieć', bg='#E1E1E1', command=lambda: self.__initial_network())
         self.action_panel_initialize_button.place(x=15, y=15, width=90, height=40)
         self.action_panel_initialize_var = StringVar()
-        self.radio_button_initialize = Radiobutton(self.optional_parameters_frame, variable=self.action_panel_initialize_var, value=0)
-        self.radio_button_initialize.place(x=115, y=25)
+        self.check_box_initialize = Checkbutton(self.optional_parameters_frame, variable=self.action_panel_initialize_var, state=DISABLED)
+        self.check_box_initialize.deselect()
+        self.check_box_initialize.place(x=115, y=25)
 
         self.action_panel_learn_button = Button(self.optional_parameters_frame, text='Naucz sieć', bg='#E1E1E1', command=lambda: self.__train_network())
         self.action_panel_learn_button.place(x=200, y=15, width=90, height=40)
@@ -459,51 +369,21 @@ class Gui:
         #self.visualization_frame = LabelFrame(self.frame, text='Wizualizacja',width=500, height=850)
         self.visualization_frame.place(x=620, y=15,width=500, height=550)
 
-        c = Canvas(self.visualization_frame)
-        c.pack(fill=BOTH, expand=1)
+        self.c = Canvas(self.visualization_frame)
+        self.c.pack(fill=BOTH, expand=1)
         #outline="#ffff00", fill="#ffff00")   # żółty
         #outline="#ffffff", fill="#ffffff")   # biały
         #outline="#808080", fill="#808080")   # szary
         #outline="#000000", fill="#000000")   # czarny
 
-        # I kwadrat
-        c.create_rectangle(  0,   0,  50,  50, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,   0, 102,  50, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,   0, 154,  50, outline="#000000", fill="#ffffff")
+        coords = [[0, 0],[52, 0],[104, 0],[0, 52],[52, 52],[104, 52],[0, 104],[52, 104],[104, 104]]
+        offset = [0, 180, 360]
+        width = 50
 
-        c.create_rectangle(  0,  52,  50, 102, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,  52, 102, 102, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,  52, 154, 102, outline="#000000", fill="#ffffff")
-
-        c.create_rectangle(  0, 104,  50, 154, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52, 104, 102, 154, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104, 104, 154, 154, outline="#000000", fill="#ffffff")
-
-        # II kwadrat
-        c.create_rectangle(  0,   0+180,  50,  50+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,   0+180, 102,  50+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,   0+180, 154,  50+180, outline="#000000", fill="#ffffff")
-
-        c.create_rectangle(  0,  52+180,  50, 102+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,  52+180, 102, 102+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,  52+180, 154, 102+180, outline="#000000", fill="#ffffff")
-
-        c.create_rectangle(  0, 104+180,  50, 154+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52, 104+180, 102, 154+180, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104, 104+180, 154, 154+180, outline="#000000", fill="#ffffff")
-
-        # III kwadrat
-        c.create_rectangle(  0,   0+360,  50,  50+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,   0+360, 102,  50+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,   0+360, 154,  50+360, outline="#000000", fill="#ffffff")
-
-        c.create_rectangle(  0,  52+360,  50, 102+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52,  52+360, 102, 102+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104,  52+360, 154, 102+360, outline="#000000", fill="#ffffff")
-
-        c.create_rectangle(  0, 104+360,  50, 154+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle( 52, 104+360, 102, 154+360, outline="#000000", fill="#ffffff")
-        c.create_rectangle(104, 104+360, 154, 154+360, outline="#000000", fill="#ffffff")
+        #kwadraty
+        for of in offset:
+            for co in coords:
+                self.c.create_rectangle(co[0], co[1]+of, co[0]+width, co[1]+width+of, outline="#000000", fill="#ffffff")
 
         ## WYNIKI LICZBOWE
 
@@ -677,7 +557,7 @@ class Gui:
         self.visualization_N3Active_label = Label(self.visualization_frame, text='Aktywacja 3 neuronu')
         self.visualization_N3Active_label.place(x=20 + 356, y=78+360+50, height=25)
 
-        c.pack(fill=BOTH, expand=1)
+        self.c.pack(fill=BOTH, expand=1)
 
     def __create_visualization_options_widgets(self):
         self.visualization_options_frame = LabelFrame(self.frame, text='Opcje wyświetlania', width=500, height=70)
@@ -691,16 +571,20 @@ class Gui:
         self.number_of_actualization_entry.place(x=250, y=15, width=70, height=25)
 
     def __initial_network(self):
-        self.random_wages=self.number_of_random_wages_var.get()
-        self.num_epoch=self.number_of_epochs_var.get()
-        self.lear_rate=self.learning_rate_var.get()
+        self.random_wages = float(self.number_of_random_wages_var.get())
+        self.num_epoch = float(self.number_of_epochs_var.get())
+        self.lear_rate = float(self.learning_rate_var.get())
+        #self.n_epoch=int(self.num_epoch)
+        self.n_epoch = 10000
 
         if self.train_dataset == None or self.train_dataset2 == None or self.train_dataset3 == None:
-            return messagebox.showinfo('Message', f'Network CANNOT be Initialized. Read the train file first.')
+            return messagebox.showerror('Message', f'Network CANNOT be Initialized. Read the train file first.')
         else:
-            self.network1, self.output_wages1 = NN.initialize_network(self,self.train_dataset,self.test_dataset)
-            self.network2, self.output_wages2 = NN.initialize_network(self,self.train_dataset2,self.test_dataset)
-            self.network3, self.output_wages3 = NN.initialize_network(self,self.train_dataset3,self.test_dataset)
+            self.network1, self.output_wages1 = NN.initialize_network(self)
+            # #print(self.network1)
+            # print(self.output_wages1)
+            self.network2, self.output_wages2 = NN.initialize_network(self)
+            self.network3, self.output_wages3 = NN.initialize_network(self)
 
             self.visualization_q11.insert(0,f'{round(self.output_wages1[0],3)}')
             self.visualization_q12.insert(0,f'{round(self.output_wages1[1],3)}')
@@ -732,23 +616,224 @@ class Gui:
             self.visualization_q38.insert(0,f'{round(self.output_wages3[7],3)}')
             self.visualization_q39.insert(0,f'{round(self.output_wages3[8],3)}')
 
-            print(self.hidden_layer)
-            print(self.n_inputs)
-            print(self.output_layer)
-            print(self.n_outputs)
-
-
+            self.check_box_initialize.select()
             return messagebox.showinfo('Message', f'Network has been INITIALIZED.')
 
     def __train_network(self):
-        #self.__visualization()
-        if self.network is None:
-            messagebox.showerror('Sieć nie istnieje', 'Przed rozpoczęciem trenowania sieci należy ją utworzyć')
-            return
+        self.random_wages = float(self.number_of_random_wages_var.get())
+        self.num_epoch = int(self.number_of_epochs_var.get())
+        self.lear_rate = float(self.learning_rate_var.get())
+
+        self.__visualization()
+        if self.network1 is None: # TO jest inicjalizowane w NN
+            return messagebox.showerror('Sieć nie istnieje', 'Przed rozpoczęciem trenowania sieci należy ją utworzyć')
+        else:
+            self.n_folds = 1
+            self.bias = 0
+            self.momentum = 0
+            #self.folds = NN.cross_validation_split(self)
+
+            n_folds = 1
+            l_rate = 0.9
+            n_epoch = 10000
+            n_hidden = 1
+            momentum = 0
+            bias = 0
+
+            scores = NB.evaluate_algorithm(self,self.train_dataset, NB.back_propagation, self.n_folds,self.lear_rate,self.num_epoch, n_hidden,rand_range=self.random_wages,momentum=self.momentum,bias=self.bias)
+
+            self.visualization_q11.delete(0, "end")
+            self.visualization_q11.insert(0, f'{round(self.output_wages1[0], 3)}')
+            self.visualization_q12.delete(0, "end")
+            self.visualization_q12.insert(0, f'{round(self.output_wages1[1], 3)}')
+            self.visualization_q13.delete(0, "end")
+            self.visualization_q13.insert(0, f'{round(self.output_wages1[2], 3)}')
+            self.visualization_q14.delete(0, "end")
+            self.visualization_q14.insert(0, f'{round(self.output_wages1[3], 3)}')
+            self.visualization_q15.delete(0, "end")
+            self.visualization_q15.insert(0, f'{round(self.output_wages1[4], 3)}')
+            self.visualization_q16.delete(0, "end")
+            self.visualization_q16.insert(0, f'{round(self.output_wages1[5], 3)}')
+            self.visualization_q17.delete(0, "end")
+            self.visualization_q17.insert(0, f'{round(self.output_wages1[6], 3)}')
+            self.visualization_q18.delete(0, "end")
+            self.visualization_q18.insert(0, f'{round(self.output_wages1[7], 3)}')
+            self.visualization_q19.delete(0, "end")
+            self.visualization_q19.insert(0, f'{round(self.output_wages1[8], 3)}')
+
+
+
+            scores2 = NB.evaluate_algorithm(self, self.train_dataset2, NB.back_propagation, n_folds, l_rate, n_epoch,n_hidden, rand_range=0.1, momentum=0, bias=0)
+
+            # print('Scores: %s' % scores)
+            # print('Mean Accuracy: %.3f%%' % (sum(scores) / float(len(scores))))
+            # print(self.output_wages1)
+            self.visualization_q21.delete(0, "end")
+            self.visualization_q21.insert(0, f'{round(self.output_wages1[0], 3)}')
+            self.visualization_q22.delete(0, "end")
+            self.visualization_q22.insert(0, f'{round(self.output_wages1[1], 3)}')
+            self.visualization_q23.delete(0, "end")
+            self.visualization_q23.insert(0, f'{round(self.output_wages1[2], 3)}')
+            self.visualization_q24.delete(0, "end")
+            self.visualization_q24.insert(0, f'{round(self.output_wages1[3], 3)}')
+            self.visualization_q25.delete(0, "end")
+            self.visualization_q25.insert(0, f'{round(self.output_wages1[4], 3)}')
+            self.visualization_q26.delete(0, "end")
+            self.visualization_q26.insert(0, f'{round(self.output_wages1[5], 3)}')
+            self.visualization_q27.delete(0, "end")
+            self.visualization_q27.insert(0, f'{round(self.output_wages1[6], 3)}')
+            self.visualization_q28.delete(0, "end")
+            self.visualization_q28.insert(0, f'{round(self.output_wages1[7], 3)}')
+            self.visualization_q29.delete(0, "end")
+            self.visualization_q29.insert(0, f'{round(self.output_wages1[8], 3)}')
+
+            scores3 = NB.evaluate_algorithm(self, self.train_dataset3, NB.back_propagation, n_folds, l_rate, n_epoch, n_hidden, rand_range=0.1, momentum=0, bias=0)
+            self.visualization_q31.delete(0, "end")
+            self.visualization_q31.insert(0, f'{round(self.output_wages1[0], 3)}')
+            self.visualization_q32.delete(0, "end")
+            self.visualization_q32.insert(0, f'{round(self.output_wages1[1], 3)}')
+            self.visualization_q33.delete(0, "end")
+            self.visualization_q33.insert(0, f'{round(self.output_wages1[2], 3)}')
+            self.visualization_q34.delete(0, "end")
+            self.visualization_q34.insert(0, f'{round(self.output_wages1[3], 3)}')
+            self.visualization_q35.delete(0, "end")
+            self.visualization_q35.insert(0, f'{round(self.output_wages1[4], 3)}')
+            self.visualization_q36.delete(0, "end")
+            self.visualization_q36.insert(0, f'{round(self.output_wages1[5], 3)}')
+            self.visualization_q37.delete(0, "end")
+            self.visualization_q37.insert(0, f'{round(self.output_wages1[6], 3)}')
+            self.visualization_q38.delete(0, "end")
+            self.visualization_q38.insert(0, f'{round(self.output_wages1[7], 3)}')
+            self.visualization_q39.delete(0, "end")
+            self.visualization_q39.insert(0, f'{round(self.output_wages1[8], 3)}')
+            # ##############
+            # # 1_EVALUATE #
+            # ##############
+            # self.scores = list()
+            # for self.fold in self.folds:
+            #     self.train_set = list(self.folds)
+            #     self.train_set = sum(self.train_set, [])
+            #     self.test_set = list()
+            #     for row in self.fold:
+            #         row_copy = list(row)
+            #         self.test_set.append(row_copy)
+            #         row_copy[-1] = None
+            #
+            # #self.predicted = NN.back_propagation(self)
+            # ##############
+            # # 2_BACK PRO #
+            # ##############
+            #
+            #
+            # #NN.train_network(self)
+            # ##############
+            # # 3_TRAINING #
+            # ##############
+            # print(self.n_epoch)
+            # for epoch in range(self.n_epoch):
+            #     for self.row_train in self.train_dataset:
+            #         #self.outputs = forward_propagate(self)
+            #         ##############
+            #         # 4_FORW.PRO #
+            #         ##############
+            #         self.inputs = self.row_train
+            #         for self.layer1 in self.network1:
+            #             self.new_inputs1 = []
+            #             for self.neuron1 in self.layer1:
+            #                 self.activate_weights = self.neuron1['weights']
+            #                 self.activation = NN.activate(self)
+            #                 self.neuron1['output'] = NN.transfer(self)
+            #                 self.new_inputs1.append(self.neuron1['output'])
+            #             self.inputs1 = self.new_inputs1
+            #         self.outputs = self.inputs1
+            #         # print('self.outputs:') #TU jest jeszcze OK
+            #         # print(self.outputs)
+            #         ##############
+            #         # 4_FORW.PRO #
+            #         ##############
+            #         self.expected = [0 for i in range(self.n_outputs)]
+            #         self.expected[row[-1]] = 1
+            #         #NN.backward_propagate_error(self)
+            #         ##############
+            #         # 7_BACK_ERR #
+            #         ##############
+            #         for i in reversed(range(len(self.network1))):
+            #             layer = self.network1[i]
+            #             errors = list()
+            #             if i != len(self.network1) - 1:
+            #                 for j in range(len(layer)):
+            #                     error = 0.0
+            #                     for neuron in self.network1[i + 1]:
+            #                         #print(neuron['delta'])
+            #                         error += (neuron['weights'][j] * neuron['delta'])
+            #                         #print(error) Do poweszenia
+            #                     errors.append(error)
+            #             else:
+            #                 for j in range(len(layer)):
+            #                     neuron = layer[j]
+            #                     errors.append(neuron['output'] - self.expected[j])
+            #                 #print(errors) #w Gui errors są o rzad wielkosci mniejsze niz w NewBP (z wyjatkiem pierwszego)
+            #             for j in range(len(layer)):
+            #                 neuron = layer[j]
+            #                 neuron['delta'] = errors[j] * NN.transfer_derivative(neuron['output'])
+            #                 #print(neuron['delta']) roznica rzedu wielkosci
+            #         ##############
+            #         # 7_BACK_ERR #
+            #         ##############
+            #         NN.update_weights(self)
+            # for i in range(len(self.network1)):
+            #     for self.neuron in self.network1[i]:
+            #         print("Actual weights:")
+            #         print(self.neuron['weights'])
+            # ##############
+            # # 3_TRAINING #
+            # ##############
+            #
+            # self.predictions = list()
+            # print(self.test_dataset)
+            #
+            # for row_BP in self.test_dataset:
+            #     #self.prediction = NN.predict(self.network1, self.row_BP)
+            #     ##############
+            #     # 5_PREDICT  #
+            #     ##############
+            #     ##############
+            #     # 4_FORW.PRO #
+            #     ##############
+            #     self.inputs = self.row_train
+            #     for self.layer1 in self.network1:
+            #         self.new_inputs1 = []
+            #         for self.neuron1 in self.layer1:
+            #             self.activate_weights = self.neuron1['weights']
+            #             self.activation = NN.activate(self)
+            #             self.neuron1['output'] = NN.transfer(self)
+            #             self.new_inputs1.append(self.neuron1['output'])
+            #         self.inputs1 = self.new_inputs1
+            #     self.outputs = self.inputs1
+            #     self.prediction=self.outputs.index(max(self.outputs))
+            #     ##############
+            #     # 4_FORW.PRO #
+            #     ##############
+            #     ##############
+            #     # 5_PREDICT  #
+            #     ##############
+            #
+            #     self.predictions.append(self.prediction)
+            # return (self.predictions)
+            # ##############
+            # # 2_BACK PRO #
+            # ##############
+            # self.actual = [self.row_actual[-1] for self.row_actual in fold]
+            # self.accuracy = NN.accuracy_metric(self)
+            # self.scores.append(self.accuracy)
+            # print(scores)
+            # ##############
+            # # 1_EVALUATE #
+            # ##############
+            #
+            # #self.scores1 = NN.evaluate_algorithm(self)
 
     def __visualization(self):
-        c = Canvas(self.visualization_frame)
-        c.pack(fill=BOTH, expand=1)
         # outline="#ffff00", fill="#ffff00")   # żółty
         # outline="#ffffff", fill="#ffffff")   # biały
         # outline="#808080", fill="#808080")   # szary
@@ -758,129 +843,20 @@ class Gui:
         BLACK = "#000000"
 
 
-        weight=[0.2,1.2,-0.3,-1.2,1,0.9,-0.4,0,-0.9]
+        weight = [0.2,1.2,-0.3,-1.2,1,0.9,-0.4,0,-0.9]
+        coords = [[0, 0],[52, 0],[104, 0],[0, 52],[52, 52],[104, 52],[0, 104],[52, 104],[104, 104]]
+        width = 50
 
-        # KWADRAT 1.1
-        if weight[0] > 1:
-            COLOR = GOLD
-        elif weight[0] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
+        #kwadraty
+        for i in range(9):
+            self.c.create_rectangle(coords[i][0], coords[i][1], coords[i][0]+width, coords[i][1]+width, outline="#000000", fill=BLACK)
 
-        c.create_rectangle(0, 0, 50, 50, outline="#000000", fill=COLOR)
+            if weight[i] > 0:
+                COLOR = GOLD
+            else:
+                COLOR=GREY
 
-        # KWADRAT 1.2
-        if weight[1] > 1:
-            COLOR = GOLD
-        elif weight[1] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-
-        c.create_rectangle(52, 0, 102, 50, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.3
-        if weight[2] > 1:
-            COLOR = GOLD
-        elif weight[2] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-
-        c.create_rectangle(104, 0, 154, 50, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.4
-        if weight[3] > 1:
-            COLOR = GOLD
-        elif weight[3] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(0, 52, 50, 102, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.5
-        if weight[4] > 1:
-            COLOR = GOLD
-        elif weight[4] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(52, 52, 102, 102, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.6
-        if weight[5] > 1:
-            COLOR = GOLD
-        elif weight[5] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(104, 52, 154, 102, outline="#000000", fill=COLOR)
-
-
-        # KWADRAT 1.7
-        if weight[6] > 1:
-            COLOR = GOLD
-        elif weight[6] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(0, 104, 50, 154, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.8
-        if weight[7] > 1:
-            COLOR = GOLD
-        elif weight[7] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(52, 104, 102, 154, outline="#000000", fill=COLOR)
-
-        # KWADRAT 1.9
-        if weight[8] > 1:
-            COLOR = GOLD
-        elif weight[8] < -1:
-            COLOR=BLACK
-        else:
-            COLOR=GREY
-        c.create_rectangle(104, 104, 154, 154, outline="#000000", fill=COLOR)
-
-        """
-        # I kwadrat
-        c.create_rectangle(0, 0, 50, 50, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 0, 102, 50, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 0, 154, 50, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 52, 50, 102, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 52, 102, 102, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 52, 154, 102, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 104, 50, 154, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 104, 102, 154, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 104, 154, 154, outline="#000000", fill=COLOR)
-        """
-        # II kwadrat
-        c.create_rectangle(0, 0 + 180, 50, 50 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 0 + 180, 102, 50 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 0 + 180, 154, 50 + 180, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 52 + 180, 50, 102 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 52 + 180, 102, 102 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 52 + 180, 154, 102 + 180, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 104 + 180, 50, 154 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 104 + 180, 102, 154 + 180, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 104 + 180, 154, 154 + 180, outline="#000000", fill=COLOR)
-
-        # III kwadrat
-        c.create_rectangle(0, 0 + 360, 50, 50 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 0 + 360, 102, 50 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 0 + 360, 154, 50 + 360, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 52 + 360, 50, 102 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 52 + 360, 102, 102 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 52 + 360, 154, 102 + 360, outline="#000000", fill=COLOR)
-
-        c.create_rectangle(0, 104 + 360, 50, 154 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(52, 104 + 360, 102, 154 + 360, outline="#000000", fill=COLOR)
-        c.create_rectangle(104, 104 + 360, 154, 154 + 360, outline="#000000", fill=COLOR)
+            if -1 <= weight[i] <= 1:
+                self.c.create_rectangle(coords[i][0], coords[i][1], coords[i][0]+abs(weight[i])*50, coords[i][1]+abs(weight[i])*50, outline="#000000", fill=COLOR)
+            else:
+                self.c.create_rectangle(coords[i][0], coords[i][1], coords[i][0]+width, coords[i][1]+width, outline="#000000", fill=COLOR)
