@@ -661,8 +661,10 @@ class Gui:
             self.visualization_q19.delete(0, "end")
             self.visualization_q19.insert(0, f'{round(self.output_wages1[8], 3)}')
 
-            for i in range(0, len(self.output_wages1)):
+            for i in range(0, len(self.output_wages1)-1):
                 self.weights.append(self.output_wages1[i])
+
+            print(self.output_wages1)
 
             scores2 = NB.evaluate_algorithm(self, self.train_dataset2, NB.back_propagation, n_folds, l_rate, n_epoch,n_hidden, rand_range=0.1, momentum=0, bias=0)
 
@@ -688,7 +690,7 @@ class Gui:
             self.visualization_q29.delete(0, "end")
             self.visualization_q29.insert(0, f'{round(self.output_wages1[8], 3)}')
 
-            for i in range(0, len(self.output_wages1)):
+            for i in range(0, len(self.output_wages1)-1):
                 self.weights.append(self.output_wages1[i])
 
             scores3 = NB.evaluate_algorithm(self, self.train_dataset3, NB.back_propagation, n_folds, l_rate, n_epoch, n_hidden, rand_range=0.1, momentum=0, bias=0)
@@ -711,7 +713,7 @@ class Gui:
             self.visualization_q39.delete(0, "end")
             self.visualization_q39.insert(0, f'{round(self.output_wages1[8], 3)}')
 
-            for i in range(0, len(self.output_wages1)):
+            for i in range(0, len(self.output_wages1)-1):
                 self.weights.append(self.output_wages1[i])
 
             self.__visualization()
