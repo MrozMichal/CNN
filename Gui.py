@@ -12,6 +12,9 @@ from csv import reader
 from math import exp
 import copy
 
+global Icons_counter
+Icons_counter=0
+
 class TrainingWindow:
     def __init__(self, epochs, training_history):
         self.frame = Tk()
@@ -30,6 +33,7 @@ class TrainingWindow:
         self.__create_widgets()
 
         self.frame.mainloop()
+
 
     def __create_widgets(self):
         self.training_label = Label(self.frame, text='Metoda uczenie:     Spadek wzdłuż gradientu z momentem')
@@ -87,6 +91,7 @@ class Gui:
         self.train_dataset3 = None
         self.test_dataset = None
         self.weights = []
+        self.sums = [0, 0, 0]
 
         # Ustawianie stanu wczytania pliku uczacego i testowego
         self.train_var_state = False
@@ -97,6 +102,94 @@ class Gui:
         self.training_window = None
         self.frame.mainloop()
 
+    def Ikona(self):
+        global Icons_counter
+        Icons_counter += 1
+        # self.number_of_random_wages_label = Label(self.standard_parameters_frame, text='Zakres losowania wag:')
+        # self.number_of_random_wages_label.place(x=5, y=15, height=25)
+        # self.number_of_random_wages_var = StringVar()
+        # self.acctual_icon='1'
+        # self.number_of_random_wages_entry = Entry(self.standard_parameters_frame, justify=CENTER,
+        #                                           textvariable=self.acctual_icon)
+        # self.number_of_random_wages_entry.insert(0, '0.1')
+        # self.number_of_random_wages_entry.place(x=145, y=15, width=50, height=25)
+        if self.train_dataset is None: # TO jest inicjalizowane w NN
+            return messagebox.showerror('Nie podano pliku', 'Wczytaj plik uczacy')
+        Icons = ['1', '2', '3']
+        if (Icons_counter == 3):
+            Icons_counter = 0
+        self.Ikona_output_var = StringVar(value=Icons[Icons_counter])
+        self.Ikona_output_entry = Entry(self.frame, justify=CENTER, textvariable=self.Ikona_output_var,
+                                        readonlybackground='#FFFFFF')
+        self.Ikona_output_entry.place(x=300, y=600, width=75, height=30)
+
+        # ICONS
+        self.ikona1 = int(self.train_dataset[Icons_counter][0])
+        self.ikona2 = int(self.train_dataset[Icons_counter][1])
+        self.ikona3 = int(self.train_dataset[Icons_counter][2])
+        self.ikona4 = int(self.train_dataset[Icons_counter][3])
+        self.ikona5 = int(self.train_dataset[Icons_counter][4])
+        self.ikona6 = int(self.train_dataset[Icons_counter][5])
+        self.ikona7 = int(self.train_dataset[Icons_counter][6])
+        self.ikona8 = int(self.train_dataset[Icons_counter][7])
+        self.ikona9 = int(self.train_dataset[Icons_counter][8])
+
+        self.ikonaAnswer1 = StringVar()
+        self.ikonaAnswer2 = StringVar()
+        self.ikonaAnswer3 = StringVar()
+
+        self.ikona1 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona1),
+                            readonlybackground='#FFFFFF')
+        self.ikona2 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona2),
+                            readonlybackground='#FFFFFF')
+        self.ikona3 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona3),
+                            readonlybackground='#FFFFFF')
+        self.ikona4 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona4),
+                            readonlybackground='#FFFFFF')
+        self.ikona5 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona5),
+                            readonlybackground='#FFFFFF')
+        self.ikona6 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona6),
+                            readonlybackground='#FFFFFF')
+        self.ikona7 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona7),
+                            readonlybackground='#FFFFFF')
+        self.ikona8 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona8),
+                            readonlybackground='#FFFFFF')
+        self.ikona9 = Entry(self.frame, justify=CENTER,
+                            textvariable=StringVar(value=self.ikona9),
+                            readonlybackground='#FFFFFF')
+
+        self.ikonaAnswer1 = Entry(self.frame, justify=CENTER,
+                                  textvariable=self.ikonaAnswer1,
+                                  state='readonly', readonlybackground='#FFFFFF')
+        self.ikonaAnswer2 = Entry(self.frame, justify=CENTER,
+                                  textvariable=self.ikonaAnswer2,
+                                  state='readonly', readonlybackground='#FFFFFF')
+        self.ikonaAnswer3 = Entry(self.frame, justify=CENTER,
+                                  textvariable=self.ikonaAnswer3,
+                                  state='readonly', readonlybackground='#FFFFFF')
+
+        self.ikona1.place(x=120, y=425, width=40, height=40)
+        self.ikona2.place(x=190, y=425, width=40, height=40)
+        self.ikona3.place(x=260, y=425, width=40, height=40)
+        self.ikona4.place(x=120, y=475, width=40, height=40)
+        self.ikona5.place(x=190, y=475, width=40, height=40)
+        self.ikona6.place(x=260, y=475, width=40, height=40)
+        self.ikona7.place(x=120, y=525, width=40, height=40)
+        self.ikona8.place(x=190, y=525, width=40, height=40)
+        self.ikona9.place(x=260, y=525, width=40, height=40)
+
+        self.ikonaAnswer1.place(x=470, y=425, width=40, height=40)
+        self.ikonaAnswer2.place(x=470, y=475, width=40, height=40)
+        self.ikonaAnswer3.place(x=470, y=525, width=40, height=40)
+
     def __create_widgets(self):
         self.__create_data_panel_widgets()
         self.__create_standard_parameters_widgets()
@@ -106,7 +199,7 @@ class Gui:
         self.__create_visualization_options_widgets()
 
         self.response_surface_button = Button(self.frame, text='Ikona', bg='#E1E1E1',
-                                              command=lambda: self.__plot_response_surface())
+                                              command=lambda: self.Ikona())
         self.response_surface_button.place(x=180, y=600, width=100, height=30)
 
         #self.Ikona_output_label = Label(self.frame, text='Wejścia')
@@ -520,22 +613,22 @@ class Gui:
 
         self.visualization_N1 = Entry(self.visualization_frame, justify=CENTER,
                                            textvariable=self.visualization_N1,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           readonlybackground='#FFFFFF')
         self.visualization_N2 = Entry(self.visualization_frame, justify=CENTER,
                                            textvariable=self.visualization_N2,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           readonlybackground='#FFFFFF')
         self.visualization_N3 = Entry(self.visualization_frame, justify=CENTER,
                                            textvariable=self.visualization_N3,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           readonlybackground='#FFFFFF')
         self.visualization_N1Active = Entry(self.visualization_frame, justify=CENTER,
                                            textvariable=self.visualization_N1Active,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           readonlybackground='#FFFFFF')
         self.visualization_N2Active = Entry(self.visualization_frame, justify=CENTER,
                                            textvariable=self.visualization_N2Active,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           readonlybackground='#FFFFFF')
         self.visualization_N3Active = Entry(self.visualization_frame, justify=CENTER,
                                            textvariable=self.visualization_N3Active,
-                                           state='readonly', readonlybackground='#FFFFFF')
+                                           readonlybackground='#FFFFFF')
 
         self.visualization_N1_label = Label(self.visualization_frame, text='Wyjście 1 neuronu')
         self.visualization_N1_label.place(x=20 + 356, y=0, height=25)
@@ -664,7 +757,8 @@ class Gui:
             for i in range(0, len(self.output_wages1)-1):
                 self.weights.append(self.output_wages1[i])
 
-            print(self.output_wages1)
+            for i in range(0, len(self.output_wages1)-1):
+                self.sums[0] += self.train_dataset[0][i]*self.output_wages1[i]
 
             scores2 = NB.evaluate_algorithm(self, self.train_dataset2, NB.back_propagation, n_folds, l_rate, n_epoch,n_hidden, rand_range=0.1, momentum=0, bias=0)
 
@@ -693,6 +787,9 @@ class Gui:
             for i in range(0, len(self.output_wages1)-1):
                 self.weights.append(self.output_wages1[i])
 
+            for i in range(0, len(self.output_wages1)-1):
+                self.sums[1] += self.train_dataset[1][i]*self.output_wages1[i]
+
             scores3 = NB.evaluate_algorithm(self, self.train_dataset3, NB.back_propagation, n_folds, l_rate, n_epoch, n_hidden, rand_range=0.1, momentum=0, bias=0)
             self.visualization_q31.delete(0, "end")
             self.visualization_q31.insert(0, f'{round(self.output_wages1[0], 3)}')
@@ -715,6 +812,13 @@ class Gui:
 
             for i in range(0, len(self.output_wages1)-1):
                 self.weights.append(self.output_wages1[i])
+
+            for i in range(0, len(self.output_wages1)-1):
+                self.sums[2] += self.train_dataset[2][i]*self.output_wages1[i]
+
+            self.visualization_N1.insert(0, f'{round(self.output_wages1[8], 3)}')
+            self.visualization_N2.insert(0, f'{round(self.output_wages1[8], 3)}')
+            self.visualization_N3.insert(0, f'{round(self.output_wages1[8], 3)}')
 
             self.__visualization()
 
@@ -871,4 +975,3 @@ class Gui:
                     self.c.create_rectangle(co[0], co[1]+of, co[0]+width, co[1]+width+of, outline="#000000", fill=COLOR)
 
                 i += 1
-
